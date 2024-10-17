@@ -1,19 +1,16 @@
-"use client";
-/* eslint-disable @typescript-eslint/no-explicit-any */
+"use client"; // Ensure you are using the client component
+
 import { useRef, useEffect } from "react";
 import { MapWidget } from "./map-widget";
 
 export default function Map({ zoomLevel }: { zoomLevel: number }) {
-  const containerRef = useRef<any>(null);
-  const mapRef = useRef<any>(null);
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  const mapRef = useRef<MapWidget | null>(null);
 
   useEffect(() => {
-    if (mapRef.current === null) {
+    if (containerRef.current && !mapRef.current) {
       mapRef.current = new MapWidget(containerRef.current);
     }
-
-    const map = mapRef.current;
-    map.setZoom(zoomLevel);
   }, [zoomLevel]);
 
   return (

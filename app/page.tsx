@@ -1,9 +1,11 @@
 import Map from "./_components/map";
-import "leaflet/dist/leaflet.css";
+
 export default function Home() {
+  const zoomLevel = 5;
+
   return (
     <>
-      <Map zoomLevel={1} />
+      <Map zoomLevel={zoomLevel} />
     </>
   );
 }
