@@ -19,6 +19,27 @@ export default function RootLayoutClient({ children }: any) {
         });
     }
   }, []);
+  React.useEffect(() => {
+    if ("Notification" in window && "serviceWorker" in navigator) {
+      // Request notification permission
+      Notification.requestPermission().then((permission) => {
+        if (permission === "granted") {
+          console.log("Notification permission granted.");
+          // Show notification if the service worker is registered
+          navigator.serviceWorker.getRegistration().then((registration) => {
+            if (registration) {
+              registration.showNotification("PWA Setup", {
+                body: "Notification permission granted and Service Worker registered.",
+                icon: "/path-to-your-icon/icon.png", // Optional icon
+              });
+            }
+          });
+        } else {
+          console.log("Notification permission denied.");
+        }
+      });
+    }
+  }, []);
 
   return <div className="">{children}</div>;
 }

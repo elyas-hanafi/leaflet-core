@@ -6,8 +6,3 @@ self.addEventListener("install", () => {
 self.addEventListener("activate", () => {
   console.log("Service Worker activating.");
 });
-
-self.addEventListener("fetch", (event: any) => {
-  console.log("Fetching:", event.request.url);
-  event.respondWith(fetch(event.request));
-});

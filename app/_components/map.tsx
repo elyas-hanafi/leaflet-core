@@ -414,9 +414,11 @@ export default function Map({ zoomLevel }: { zoomLevel: number }) {
   }, [zoomLevel]);
 
   return (
-    <div
-      className="w-full h-screen" // Make the map container full screen
-      ref={containerRef}
-    />
+    <>
+      <div
+        className="w-full h-screen relative z-0" // Make the map container full screen
+        ref={containerRef}
+      />
+    </>
   );
 }
