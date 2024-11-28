@@ -35,7 +35,7 @@ export default function RootLayoutClient({ children }: any) {
             }
           });
         } else {
-          console.log("Notification permission denied.");
+          alert("Notification permission denied.");
         }
       });
     }
