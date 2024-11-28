@@ -81,6 +81,7 @@ export class MapWidget {
           L.latLng(lat, lng), // Destination (clicked marker's position)
         ],
         routeWhileDragging: true, // Allow the route to update while dragging
+        show: false, // Hide the default control panel (no sidebar)
       }).addTo(this.map);
 
       let routeCoordinates: any[] = [];
