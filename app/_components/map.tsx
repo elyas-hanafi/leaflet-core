@@ -137,7 +137,11 @@ export default function Map({ zoomLevel }: { zoomLevel: number }) {
   const mapRef = useRef<MapWidget | null>(null);
 
   useEffect(() => {
-    if (containerRef.current && !mapRef.current) {
+    if (
+      typeof window !== "undefined" &&
+      containerRef.current &&
+      !mapRef.current
+    ) {
       mapRef.current = new MapWidget(containerRef.current);
       mapRef.current.addMarkersToCluster(data);
     }
