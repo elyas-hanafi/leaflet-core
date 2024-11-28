@@ -22,6 +22,272 @@ const data = [
     type: "Feature",
     geometry: {
       type: "Point",
+      coordinates: [43.97833571758883, 28.252707666241346],
+    },
+    properties: {
+      ele: 969.947449,
+      time: "2019-05-13T00:00:00.000Z",
+      Name: "SL1",
+      Power_Watt: 30,
+      pole_hgt: 8,
+    },
+  },
+  {
+    type: "Feature",
+    geometry: {
+      type: "Point",
+      coordinates: [43.97833571758883, 28.252707666241346],
+    },
+    properties: {
+      ele: 969.947449,
+      time: "2019-05-13T00:00:00.000Z",
+      Name: "SL1",
+      Power_Watt: 30,
+      pole_hgt: 8,
+    },
+  },
+  {
+    type: "Feature",
+    geometry: {
+      type: "Point",
+      coordinates: [33.97833571758883, 28.252707666241346],
+    },
+    properties: {
+      ele: 969.947449,
+      time: "2019-05-13T00:00:00.000Z",
+      Name: "SL1",
+      Power_Watt: 30,
+      pole_hgt: 8,
+    },
+  },
+  {
+    type: "Feature",
+    geometry: {
+      type: "Point",
+      coordinates: [33.97833571758883, 28.252707666241346],
+    },
+    properties: {
+      ele: 969.947449,
+      time: "2019-05-13T00:00:00.000Z",
+      Name: "SL1",
+      Power_Watt: 30,
+      pole_hgt: 8,
+    },
+  },
+  {
+    type: "Feature",
+    geometry: {
+      type: "Point",
+      coordinates: [53.97833571758883, 28.252707666241346],
+    },
+    properties: {
+      ele: 969.947449,
+      time: "2019-05-13T00:00:00.000Z",
+      Name: "SL1",
+      Power_Watt: 30,
+      pole_hgt: 8,
+    },
+  },
+  {
+    type: "Feature",
+    geometry: {
+      type: "Point",
+      coordinates: [53.97833571758883, 28.252707666241346],
+    },
+    properties: {
+      ele: 969.947449,
+      time: "2019-05-13T00:00:00.000Z",
+      Name: "SL1",
+      Power_Watt: 30,
+      pole_hgt: 8,
+    },
+  },
+  {
+    type: "Feature",
+    geometry: {
+      type: "Point",
+      coordinates: [50.97833571758883, 20.252707666241346],
+    },
+    properties: {
+      ele: 969.947449,
+      time: "2019-05-13T00:00:00.000Z",
+      Name: "SL1",
+      Power_Watt: 30,
+      pole_hgt: 8,
+    },
+  },
+  {
+    type: "Feature",
+    geometry: {
+      type: "Point",
+      coordinates: [50.97833571758883, 20.252707666241346],
+    },
+    properties: {
+      ele: 969.947449,
+      time: "2019-05-13T00:00:00.000Z",
+      Name: "SL1",
+      Power_Watt: 30,
+      pole_hgt: 8,
+    },
+  },
+  {
+    type: "Feature",
+    geometry: {
+      type: "Point",
+      coordinates: [50.97833571758883, 20.252707666241346],
+    },
+    properties: {
+      ele: 969.947449,
+      time: "2019-05-13T00:00:00.000Z",
+      Name: "SL1",
+      Power_Watt: 30,
+      pole_hgt: 8,
+    },
+  },
+  {
+    type: "Feature",
+    geometry: {
+      type: "Point",
+      coordinates: [55.97833571758883, 40.252707666241346],
+    },
+    properties: {
+      ele: 969.947449,
+      time: "2019-05-13T00:00:00.000Z",
+      Name: "SL1",
+      Power_Watt: 30,
+      pole_hgt: 8,
+    },
+  },
+  {
+    type: "Feature",
+    geometry: {
+      type: "Point",
+      coordinates: [55.97833571758883, 40.252707666241346],
+    },
+    properties: {
+      ele: 969.947449,
+      time: "2019-05-13T00:00:00.000Z",
+      Name: "SL1",
+      Power_Watt: 30,
+      pole_hgt: 8,
+    },
+  },
+  {
+    type: "Feature",
+    geometry: {
+      type: "Point",
+      coordinates: [55.97833571758883, 40.252707666241346],
+    },
+    properties: {
+      ele: 969.947449,
+      time: "2019-05-13T00:00:00.000Z",
+      Name: "SL1",
+      Power_Watt: 30,
+      pole_hgt: 8,
+    },
+  },
+  {
+    type: "Feature",
+    geometry: {
+      type: "Point",
+      coordinates: [55.97833571758883, 40.252707666241346],
+    },
+    properties: {
+      ele: 969.947449,
+      time: "2019-05-13T00:00:00.000Z",
+      Name: "SL1",
+      Power_Watt: 30,
+      pole_hgt: 8,
+    },
+  },
+  {
+    type: "Feature",
+    geometry: {
+      type: "Point",
+      coordinates: [55.97833571758883, 32.252707666241346],
+    },
+    properties: {
+      ele: 969.947449,
+      time: "2019-05-13T00:00:00.000Z",
+      Name: "SL1",
+      Power_Watt: 30,
+      pole_hgt: 8,
+    },
+  },
+  {
+    type: "Feature",
+    geometry: {
+      type: "Point",
+      coordinates: [55.97833571758883, 32.252707666241346],
+    },
+    properties: {
+      ele: 969.947449,
+      time: "2019-05-13T00:00:00.000Z",
+      Name: "SL1",
+      Power_Watt: 30,
+      pole_hgt: 8,
+    },
+  },
+  {
+    type: "Feature",
+    geometry: {
+      type: "Point",
+      coordinates: [55.97833571758883, 32.252707666241346],
+    },
+    properties: {
+      ele: 969.947449,
+      time: "2019-05-13T00:00:00.000Z",
+      Name: "SL1",
+      Power_Watt: 30,
+      pole_hgt: 8,
+    },
+  },
+  {
+    type: "Feature",
+    geometry: {
+      type: "Point",
+      coordinates: [55.97833571758883, 32.252707666241346],
+    },
+    properties: {
+      ele: 969.947449,
+      time: "2019-05-13T00:00:00.000Z",
+      Name: "SL1",
+      Power_Watt: 30,
+      pole_hgt: 8,
+    },
+  },
+  {
+    type: "Feature",
+    geometry: {
+      type: "Point",
+      coordinates: [55.97833571758883, 32.252707666241346],
+    },
+    properties: {
+      ele: 969.947449,
+      time: "2019-05-13T00:00:00.000Z",
+      Name: "SL1",
+      Power_Watt: 30,
+      pole_hgt: 8,
+    },
+  },
+  {
+    type: "Feature",
+    geometry: {
+      type: "Point",
+      coordinates: [55.97833571758883, 32.252707666241346],
+    },
+    properties: {
+      ele: 969.947449,
+      time: "2019-05-13T00:00:00.000Z",
+      Name: "SL1",
+      Power_Watt: 30,
+      pole_hgt: 8,
+    },
+  },
+  {
+    type: "Feature",
+    geometry: {
+      type: "Point",
       coordinates: [83.97833571758883, 28.252707666241346],
     },
     properties: {
