@@ -7,131 +7,53 @@ import "leaflet-routing-machine";
 import "leaflet.markercluster";
 import "./MarkerCluster.css";
 import "./MarkerCluster.Default.css";
+import { MapElementFactory } from "./map-factory";
+import { LocationObserver } from "./map-observer";
 
-// Factory for creating map elements
-class MapElementFactory {
-  static createMap(domNode: string | HTMLElement): L.Map {
-    const map = L.map(domNode, {
-      zoomControl: true,
-      scrollWheelZoom: true,
-      minZoom: 4,
-      attributionControl: true,
-    });
-
-    L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
-      maxZoom: 19,
-      attribution: "© OpenStreetMap",
-    }).addTo(map);
-
-    map.setView([28.238, 83.9956], 11); // Center the map
-    return map;
-  }
-
-  static createMarker(
-    lat: number,
-    lng: number,
-    popupText: string = ""
-  ): L.Marker {
-    const marker = L.marker([lat, lng]);
-    if (popupText) marker.bindPopup(popupText);
-    return marker;
-  }
-
-  static createClusterGroup(): L.MarkerClusterGroup {
-    return L.markerClusterGroup();
-  }
-
-  static createRoutingControl(waypoints: L.LatLng[]): L.Routing.Control {
-    return L.Routing.control({
-      waypoints,
-      routeWhileDragging: false,
-      show: false,
-    });
-  }
-}
-
-// Observer for handling location updates
-class LocationObserver {
-  private observers: Array<(position: GeolocationPosition) => void> = [];
-  private geoWatchId: number | null = null;
-
-  addObserver(observer: (position: GeolocationPosition) => void) {
-    this.observers.push(observer);
-  }
-
-  notifyObservers(position: GeolocationPosition) {
-    this.observers.forEach((observer) => observer(position));
-  }
-
-  // Start watching position
-  watchPosition() {
-    if (navigator.geolocation && !this.geoWatchId) {
-      this.geoWatchId = navigator.geolocation.watchPosition(
-        (position) => this.notifyObservers(position), // Callback on position change
-        (error) => console.error("Geolocation error:", error), // Handle error
-        {
-          enableHighAccuracy: true, // Get high accuracy location
-          timeout: 15000, // Timeout after 15 seconds
-          maximumAge: 0, // Always get fresh location
-        }
-      );
-    } else {
-      console.error("Geolocation not supported or already watching position.");
-    }
-  }
-
-  // Stop watching position
-  stopWatching() {
-    if (this.geoWatchId !== null) {
-      navigator.geolocation.clearWatch(this.geoWatchId);
-      this.geoWatchId = null;
-    }
-  }
-}
 export class MapWidget {
   protected map: L.Map;
-  private currentMarker: L.Marker | null = null;
-  private userMarker: L.Marker | null = null;
-  private clusterGroup: L.MarkerClusterGroup;
-  public clusterData: any;
-  public clusterModal: boolean;
+  private currentMarker: L.Marker | null = null; // Marker to show user's progress along the route
+  private userMarker: L.Marker | null = null; // Marker for user's location
+  private clusterGroup: L.MarkerClusterGroup; // Cluster group to hold markers
+  public clusterData: any; // Data related to a clicked cluster (not well defined)
+  public clusterModal: boolean; // Control the visibility of the cluster modal
   private locationObserver: LocationObserver;
   public locationActive: boolean;
-  public isMissionActive: boolean; // Track if a mission is active
-  private routingControl: L.Routing.Control | null = null; // Store the routing control
+  public isMissionActive: boolean; // Track if a mission (route following) is active
+  private routingControl: L.Routing.Control | null = null; // Control for route path
 
   constructor(
     domNode: string | HTMLElement,
-    { onClusterClick }: { onClusterClick: () => void }
+    { onClusterClick }: { onClusterClick: () => void } // Callback for when a cluster is clicked
   ) {
     this.map = MapElementFactory.createMap(domNode);
     this.clusterGroup = MapElementFactory.createClusterGroup();
     this.locationObserver = new LocationObserver();
     this.locationActive = false;
     this.clusterModal = false;
-    this.isMissionActive = false; // Initially, no mission
-    this.init(onClusterClick);
+    this.isMissionActive = false; // Initially no mission is active
+    this.init(onClusterClick); // Initialize the map widget
   }
 
   private init(onClusterClick: () => void) {
     this.clusterGroup.on("click", (e: any) => {
-      if (this.isMissionActive) return; // Prevent click if mission is active
+      if (this.isMissionActive) return; // Prevent cluster clicks if mission is active
       this.clusterData = e;
-      onClusterClick(); // Trigger callback when cluster is clicked
+      onClusterClick(); // Trigger callback on cluster click
     });
 
     this.map.addLayer(this.clusterGroup);
 
-    // Start observing user's location as soon as the map is ready
+    // Start observing user's location once the map is ready
     this.locationObserver.addObserver((position) => {
       const { latitude, longitude } = position.coords;
-      this.updateUserMarker(latitude, longitude);
+      this.updateUserMarker(latitude, longitude); // Update user's marker when position changes
     });
 
-    this.locationObserver.watchPosition(); // Start watching the user's position
+    this.locationObserver.watchPosition(); // Start location tracking
   }
 
-  // Update the user's marker position on the map
+  // Update the user marker when location changes
   private updateUserMarker(lat: number, lng: number) {
     if (!this.userMarker) {
       this.userMarker = MapElementFactory.createMarker(
@@ -139,25 +61,24 @@ export class MapWidget {
         lng,
         "You are here."
       ).addTo(this.map);
-      this.map.setView([lat, lng], 15); // Zoom to the user's location
+      this.map.setView([lat, lng], 15); // Zoom in to user's location
     } else {
-      this.userMarker.setLatLng([lat, lng]);
+      this.userMarker.setLatLng([lat, lng]); // Update marker position
     }
 
-    // Optionally, add the updated user marker to the cluster
-    this.clusterGroup.addLayer(this.userMarker);
+    this.clusterGroup.addLayer(this.userMarker); // Add the user marker to the cluster group
   }
 
-  // Stop watching location when the widget is no longer needed
+  // Stop watching user's location
   public stopLocationTracking() {
     this.locationObserver.stopWatching();
   }
 
-  // Handle the mission logic and route follow-up
+  // Handle cluster click logic (start mission if not active)
   public handleClusterClick(latlng: L.LatLng) {
-    if (this.isMissionActive) return; // Don't allow clicks during an active mission
+    if (this.isMissionActive) return; // Prevent starting a new mission if one is active
     if (!this.userMarker) {
-      this.locationActive = false;
+      this.locationActive = false; // If no user marker, don't start a mission
       return;
     }
 
@@ -167,11 +88,11 @@ export class MapWidget {
       latlng,
     ]);
     this.routingControl.addTo(this.map);
-    this.followRoute(this.routingControl);
-    this.isMissionActive = true; // Mark the mission as active
+    this.followRoute(this.routingControl); // Follow the route after creation
+    this.isMissionActive = true; // Mark mission as active
   }
 
-  // Follow route and update user marker’s position along the route
+  // Follow the route and update the user's position on it
   private followRoute(routingControl: L.Routing.Control) {
     let routeCoordinates: any[] = [];
 
@@ -179,7 +100,6 @@ export class MapWidget {
       const routes = event.routes;
       routeCoordinates = routes[0].coordinates;
 
-      // Use the user marker to follow the route
       if (!this.currentMarker) {
         this.currentMarker = MapElementFactory.createMarker(
           routeCoordinates[0].lat,
@@ -187,7 +107,7 @@ export class MapWidget {
         ).addTo(this.map);
       }
 
-      // Observe user's position and update accordingly
+      // Observe user's position and update current marker's position along the route
       this.locationObserver.addObserver((position) => {
         const { latitude, longitude } = position.coords;
         const userPosition = L.latLng(latitude, longitude);
@@ -197,11 +117,9 @@ export class MapWidget {
         );
 
         if (closestCoord) {
-          // Set the user marker position to the closest route coordinate
-          this.userMarker?.setLatLng(closestCoord);
-          this.currentMarker?.setLatLng(closestCoord);
+          this.currentMarker?.setLatLng(closestCoord); // Update marker position
 
-          // Check if the user has arrived at the destination
+          // Check if user has arrived at destination
           const destination = L.latLng(
             routeCoordinates[routeCoordinates.length - 1].lat,
             routeCoordinates[routeCoordinates.length - 1].lng
@@ -219,8 +137,7 @@ export class MapWidget {
 */
   private onArrival(destination: L.LatLng) {
     alert(`You have arrived at your destination: ${destination}`);
-    // Perform any actions when the user arrives, like stopping routing, showing a message, etc.
-    this.cancelMission(); // Optionally cancel the mission when arrived
+    this.cancelMission(); // Optionally cancel the mission upon arrival
   }
 
   /* 
@@ -235,17 +152,17 @@ export class MapWidget {
     return distance <= arrivalThreshold; // If within threshold, consider arrival
   }
 
-  // Cancel mission and remove routing
+  // Cancel the mission (remove route and current marker)
   public cancelMission() {
     if (this.routingControl) {
-      this.map.removeControl(this.routingControl); // Remove the route
+      this.map.removeControl(this.routingControl); // Remove route
       this.routingControl = null;
     }
     if (this.currentMarker) {
-      this.map.removeLayer(this.currentMarker); // Remove the user marker
+      this.map.removeLayer(this.currentMarker); // Remove current marker
       this.currentMarker = null;
     }
-    this.isMissionActive = false; // Set mission to inactive
+    this.isMissionActive = false; // Mission is no longer active
   }
 
   // Helper to find the closest coordinate in the route
@@ -284,10 +201,10 @@ export class MapWidget {
       },
     });
 
-    this.clusterGroup.addLayer(lightData);
+    this.clusterGroup.addLayer(lightData); // Add clustered markers to the map
   }
 
-  // Set user's location from an external source (e.g., hook)
+  // Set user's location manually from external source
   public setUserLocation(lat: number, lng: number) {
     if (!this.userMarker) {
       this.userMarker = MapElementFactory.createMarker(
@@ -297,13 +214,14 @@ export class MapWidget {
       ).addTo(this.map);
       this.map.setView([lat, lng], 25); // Zoom to the user's location
     } else {
-      this.userMarker.setLatLng([lat, lng]);
+      this.userMarker.setLatLng([lat, lng]); // Update user marker position
     }
 
-    // Optionally, add user's location to the cluster
+    // Optionally, add the user location to the cluster
     this.clusterGroup.addLayer(this.userMarker);
   }
 
+  // Set map view to user's location with a specified zoom level
   public setMapViewToUserLocation(lat: number, lng: number) {
     this.map.flyTo([lat, lng], 25); // Adjust zoom level as necessary
   }
