@@ -17,7 +17,7 @@ export const usePWADetection = () => {
       e.preventDefault();
       setDeferredPrompt(e); // Store the event
     };
-
+    console.log(isInstalled);
     window.addEventListener("beforeinstallprompt", handleBeforeInstallPrompt);
 
     return () => {

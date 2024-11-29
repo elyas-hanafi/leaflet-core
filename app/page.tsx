@@ -9,7 +9,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { useGeolocationPrompt, usePWADetection } from "@/lib/hooks";
+import { useGeolocationPrompt } from "@/lib/hooks";
 import dynamic from "next/dynamic";
 import { pwaInstallHandler } from "pwa-install-handler";
 import { useState } from "react";
@@ -20,10 +20,9 @@ const Map = dynamic(() => import("./_components/map"), {
 
 export default function Home() {
   const zoomLevel = 5;
-  const { isInstalled } = usePWADetection();
   const { isLocationEnabled, promptUserToEnableLocation } =
     useGeolocationPrompt();
-  const [installModal, setInstallModal] = useState<any>(!isInstalled);
+  const [installModal, setInstallModal] = useState<any>(false);
   function handelInstallModal() {
     pwaInstallHandler.install().catch((err) => console.log(err));
   }
@@ -36,12 +35,14 @@ export default function Home() {
           <DialogHeader>
             <DialogTitle>Install our app</DialogTitle>
             <DialogDescription>
-              Would you like to install this app for a better experience? satus:
-              {`${installModal}`}
+              Would you like to install this app for a better experience?
             </DialogDescription>
           </DialogHeader>
           <DialogFooter>
             <Button onClick={handelInstallModal}>Install PWA</Button>
+            <Button onClick={() => setInstallModal(false)} variant={`outline`}>
+              I am Already use App
+            </Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
