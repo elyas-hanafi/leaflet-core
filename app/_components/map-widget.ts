@@ -227,4 +227,8 @@ export class MapWidget {
     // Optionally, add user's location to the cluster
     this.clusterGroup.addLayer(this.userMarker);
   }
+
+  public setMapViewToUserLocation(lat: number, lng: number) {
+    this.map.setView([lat, lng], 13); // Adjust zoom level as necessary
+  }
 }

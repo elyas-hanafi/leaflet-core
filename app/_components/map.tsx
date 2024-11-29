@@ -15,6 +15,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { Icon } from "@/components/ui/icon";
 // Example data
 const data = [
   {
@@ -143,19 +144,39 @@ export default function Map({ zoomLevel }: { zoomLevel: number }) {
 
   const { isLocationEnabled, promptUserToEnableLocation } =
     useGeolocationPrompt(mapRef.current!);
+
   const [installModal, setInstallModal] = useState<any>(true);
+
   function handelInstallModal() {
     pwaInstallHandler.install().catch((err) => console.log(err));
   }
+
   const handleCancelMission = () => {
     mapRef.current?.cancelMission(); // Cancel mission
     setIsMissionActive(false); // Update state
     setClusterModal(false);
   };
+
   const handleStartMission = () => {
     mapRef.current?.handleClusterClick(mapRef.current.clusterData.latlng);
     setIsMissionActive(true); // Update state
     setClusterModal(false);
+  };
+
+  const handleSetMapViewToUserLocation = () => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const { latitude, longitude } = position.coords;
+          mapRef.current?.setMapViewToUserLocation(latitude, longitude);
+        },
+        (error) => {
+          console.error("Error getting location: ", error);
+        }
+      );
+    } else {
+      alert("Geolocation is not supported by this browser.");
+    }
   };
   return (
     <>
@@ -236,6 +257,13 @@ export default function Map({ zoomLevel }: { zoomLevel: number }) {
           </Button>
         </div>
       )}
+      <Button
+        variant={"outline"}
+        className="absolute top-20 left-2 z-50"
+        onClick={handleSetMapViewToUserLocation}
+      >
+        <Icon icon="teenyicons:location-outline" />
+      </Button>
     </>
   );
 }
