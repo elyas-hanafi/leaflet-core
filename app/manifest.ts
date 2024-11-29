@@ -5,8 +5,8 @@ export default function manifest(): MetadataRoute.Manifest {
     name: "Next.js PWA",
     short_name: "NextPWA",
     description: "A Progressive Web App built with Next.js",
-    start_url: "/",
-    display: "standalone", // Ensures the app opens in full screen
+    start_url: "index.html?fullscreen=true", // Ensures fullscreen at launch
+    display: "fullscreen",
     background_color: "#ffffff",
     theme_color: "#000000",
   };
