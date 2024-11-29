@@ -99,6 +99,7 @@ export default function Map({ zoomLevel }: { zoomLevel: number }) {
   const mapRef = useRef<MapWidget | null>(null);
   const [clusterModal, setClusterModal] = useState(false); // Track modal state
   const [isMissionActive, setIsMissionActive] = useState(false); // Track mission state
+  const [speed, setSpeed] = useState<number | null>(null); // State to track speed
   useEffect(() => {
     if (
       typeof window !== "undefined" &&
@@ -111,6 +112,34 @@ export default function Map({ zoomLevel }: { zoomLevel: number }) {
       mapRef.current.addMarkersToCluster(data);
     }
   }, [zoomLevel]);
+  useEffect(() => {
+    // If mission is active, start tracking speed
+    if (isMissionActive) {
+      const geoWatch = navigator.geolocation.watchPosition(
+        (position) => {
+          const { speed } = position.coords;
+          if (speed != null) {
+            setSpeed(speed); // Update the speed state
+          }
+        },
+        (error) => {
+          console.error("Error getting location: ", error);
+        },
+        {
+          enableHighAccuracy: true,
+          timeout: 15000,
+          maximumAge: 0,
+        }
+      );
+
+      // Cleanup on component unmount or when mission is canceled
+      return () => {
+        if (geoWatch) {
+          navigator.geolocation.clearWatch(geoWatch);
+        }
+      };
+    }
+  }, [isMissionActive]);
 
   const { isLocationEnabled, promptUserToEnableLocation } =
     useGeolocationPrompt(mapRef.current!);
@@ -195,9 +224,9 @@ export default function Map({ zoomLevel }: { zoomLevel: number }) {
         </>
       )}
       {isMissionActive && (
-        <div className="absolute bottom-28 w-[80%] mx-auto p-10 items-center justify-between bg-white left-1/2 -translate-x-1/2 rounded-xl flex">
+        <div className="absolute bottom-28 w-[80%] mx-auto p-10 items-center justify-between bg-white left-1/2 -translate-x-1/2 rounded-xl flex flex-col gap-y-4 md:flex-row">
           <div className="bg-slate-200 p-5 rounded-xl">
-            <p>speed:</p>
+            <p>speed: {speed}</p>
             <p>estimate to destination:</p>
           </div>
           <Button variant={`destructive`} onClick={handleCancelMission}>
