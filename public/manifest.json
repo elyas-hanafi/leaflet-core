@@ -1,6 +1,6 @@
 {
-  "name": "Movie Master",
-  "short_name": "Moviemaster",
+  "name": "Routing",
+  "short_name": "Router",
   "theme_color": "#8936FF",
   "background_color": "#333333",
   "start_url": "/",
