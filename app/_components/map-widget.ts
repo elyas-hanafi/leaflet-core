@@ -98,31 +98,6 @@ export class MapWidget {
       this.handleClusterClick(e.latlng);
     });
     this.map.addLayer(this.clusterGroup);
-    this.addUserLocation();
-  }
-
-  // Add the user's location to the map
-  private addUserLocation() {
-    const updateUserLocation = (position: GeolocationPosition) => {
-      const { latitude, longitude } = position.coords;
-
-      if (!this.userMarker) {
-        this.userMarker = MapElementFactory.createMarker(
-          latitude,
-          longitude,
-          "You are here."
-        ).addTo(this.map);
-        this.map.setView([latitude, longitude], 13); // Zoom in
-      } else {
-        this.userMarker.setLatLng([latitude, longitude]);
-      }
-
-      // Optionally add user's location to the cluster
-      this.clusterGroup.addLayer(this.userMarker);
-    };
-
-    this.locationObserver.addObserver(updateUserLocation);
-    this.locationObserver.watchPosition();
   }
 
   // Handle cluster clicks and start routing
