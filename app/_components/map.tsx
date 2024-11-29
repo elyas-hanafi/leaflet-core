@@ -155,6 +155,7 @@ export default function Map({ zoomLevel }: { zoomLevel: number }) {
   const handleStartMission = () => {
     mapRef.current?.handleClusterClick(mapRef.current.clusterData.latlng);
     setIsMissionActive(true); // Update state
+    setClusterModal(false);
   };
   return (
     <>
