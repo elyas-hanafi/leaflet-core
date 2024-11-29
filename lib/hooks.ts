@@ -46,7 +46,7 @@ export const usePWADetection = () => {
 };
 
 export const useGeolocationPrompt = () => {
-  const [isLocationEnabled, setIsLocationEnabled] = useState<boolean>(true);
+  const [isLocationEnabled, setIsLocationEnabled] = useState<boolean>(false);
   const [isPermissionGranted, setIsPermissionGranted] =
     useState<boolean>(false);
 

@@ -47,10 +47,7 @@ export default function Home() {
       </Dialog>
       {!installModal && (
         <>
-          <Dialog
-            open={isLocationEnabled || isPermissionGranted}
-            onOpenChange={setInstallModal}
-          >
+          <Dialog open={!isLocationEnabled} onOpenChange={setInstallModal}>
             <DialogContent>
               <DialogHeader>
                 <DialogTitle>Pleas Active Your GPS</DialogTitle>
