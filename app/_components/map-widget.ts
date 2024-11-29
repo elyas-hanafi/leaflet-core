@@ -130,7 +130,10 @@ export class MapWidget {
     this.isMissionActive = true; // Mark the mission as active
   }
 
-  // Follow route and update user marker's position along the route
+  /* 
+  Follow route and update user marker's position along the route
+  Now includes arrival detection
+*/
   private followRoute(routingControl: L.Routing.Control) {
     let routeCoordinates: any[] = [];
 
@@ -152,11 +155,42 @@ export class MapWidget {
           userPosition,
           routeCoordinates
         );
+
         if (closestCoord) {
           this.currentMarker?.setLatLng(closestCoord);
+
+          // Check if user has arrived at destination
+          const destination = L.latLng(
+            routeCoordinates[routeCoordinates.length - 1].lat,
+            routeCoordinates[routeCoordinates.length - 1].lng
+          );
+          if (this.hasArrivedAtDestination(userPosition, destination)) {
+            this.onArrival(destination); // Trigger arrival event or callback
+          }
         }
       });
     });
+  }
+
+  /* 
+  Callback to handle arrival at destination
+*/
+  private onArrival(destination: L.LatLng) {
+    alert(`You have arrived at your destination: ${destination}`);
+    // Perform any actions when the user arrives, like stopping routing, showing a message, etc.
+    this.cancelMission(); // Optionally cancel the mission when arrived
+  }
+
+  /* 
+  Method to check if the user has arrived at the destination
+*/
+  private hasArrivedAtDestination(
+    userPosition: L.LatLng,
+    destination: L.LatLng,
+    arrivalThreshold: number = 20 // Threshold in meters (default: 20 meters)
+  ): boolean {
+    const distance = userPosition.distanceTo(destination);
+    return distance <= arrivalThreshold; // If within threshold, consider arrival
   }
 
   // Cancel mission and remove routing
