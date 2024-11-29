@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { MapWidget } from "@/app/_components/map-widget";
 import { useEffect, useState } from "react";
 
 export const usePWADetection = () => {
@@ -45,7 +46,8 @@ export const usePWADetection = () => {
   return { isInstalled, installPWA };
 };
 
-export const useGeolocationPrompt = () => {
+// Custom hook to handle geolocation permissions and user location
+export const useGeolocationPrompt = (mapWidget: MapWidget) => {
   const [isLocationEnabled, setIsLocationEnabled] = useState<boolean>(false);
   const [isPermissionGranted, setIsPermissionGranted] =
     useState<boolean>(false);
@@ -76,11 +78,18 @@ export const useGeolocationPrompt = () => {
             position.coords.latitude,
             position.coords.longitude,
           ]);
+          // Pass the user's location to the MapWidget class
+          if (mapWidget) {
+            mapWidget.setUserLocation(
+              position.coords.latitude,
+              position.coords.longitude
+            );
+          }
         },
         () => setIsLocationEnabled(false)
       );
     });
-  }, []);
+  }, [mapWidget]);
 
   const promptUserToEnableLocation = () => {
     // Try to get the user's position again (might prompt them if in 'prompt' state)
@@ -88,6 +97,11 @@ export const useGeolocationPrompt = () => {
       (position) => {
         setIsLocationEnabled(true);
         setUserLocation([position.coords.latitude, position.coords.longitude]);
+        // Pass the user's location to the MapWidget class
+        mapWidget.setUserLocation(
+          position.coords.latitude,
+          position.coords.longitude
+        );
       },
       () => setIsLocationEnabled(false)
     );

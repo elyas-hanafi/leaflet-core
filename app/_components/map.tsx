@@ -1,8 +1,20 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client"; // Ensure you are using the client component
 
 import { useRef, useEffect } from "react";
 import { MapWidget } from "./map-widget";
-
+import { useGeolocationPrompt } from "@/lib/hooks";
+import { pwaInstallHandler } from "pwa-install-handler";
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 // Example data
 const data = [
   {
@@ -414,12 +426,56 @@ export default function Map({ zoomLevel }: { zoomLevel: number }) {
     }
   }, [zoomLevel]);
 
+  const { isLocationEnabled, promptUserToEnableLocation, userLocation } =
+    useGeolocationPrompt(mapRef.current!);
+  const [installModal, setInstallModal] = useState<any>(true);
+  function handelInstallModal() {
+    pwaInstallHandler.install().catch((err) => console.log(err));
+  }
+
   return (
     <>
       <div
         className="w-full h-screen absolute inset-0 z-0" // Make the map container full screen
         ref={containerRef}
       />
+      <Dialog open={installModal} onOpenChange={setInstallModal}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Install our app</DialogTitle>
+            <DialogDescription>
+              Would you like to install this app for a better experience?
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            <Button onClick={handelInstallModal}>Install PWA</Button>
+            <Button onClick={() => setInstallModal(false)} variant={`outline`}>
+              I am Already use App
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+      {!installModal && (
+        <>
+          <Dialog open={!isLocationEnabled} onOpenChange={setInstallModal}>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>Pleas Active Your GPS</DialogTitle>
+                <DialogDescription>
+                  For Use this app you must active your GPS
+                  {`${installModal}`}
+                </DialogDescription>
+              </DialogHeader>
+              <DialogFooter>
+                <Button onClick={promptUserToEnableLocation}>Active GPS</Button>
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
+        </>
+      )}
+      <div className="absolute bottom-28 w-[80%] mx-auto p-10 bg-white left-1/2 -translate-x-1/2 rounded-xl">
+        {`${userLocation}`}
+      </div>
     </>
   );
 }

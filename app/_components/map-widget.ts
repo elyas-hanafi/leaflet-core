@@ -230,4 +230,21 @@ export class MapWidget {
 
     this.clusterGroup.addLayer(lightData);
   }
+
+  // Set user's location from an external source (e.g., hook)
+  public setUserLocation(lat: number, lng: number) {
+    if (!this.userMarker) {
+      this.userMarker = MapElementFactory.createMarker(
+        lat,
+        lng,
+        "You are here."
+      ).addTo(this.map);
+      this.map.setView([lat, lng], 13); // Zoom to the user's location
+    } else {
+      this.userMarker.setLatLng([lat, lng]);
+    }
+
+    // Optionally, add user's location to the cluster
+    this.clusterGroup.addLayer(this.userMarker);
+  }
 }
