@@ -12,7 +12,6 @@ import { LocationObserver } from "./map-observer";
 
 export class MapWidget {
   protected map: L.Map;
-  private currentMarker: L.Marker | null = null; // Marker to show user's progress along the route
   private userMarker: L.Marker | null = null; // Marker for user's location
   private clusterGroup: L.MarkerClusterGroup; // Cluster group to hold markers
   public clusterData: any; // Data related to a clicked cluster (not well defined)
@@ -101,15 +100,9 @@ export class MapWidget {
       const routes = event.routes;
       routeCoordinates = routes[0].coordinates;
 
-      if (!this.currentMarker) {
-        // Create the current marker only if it doesn't exist yet
-        this.currentMarker = MapElementFactory.createMarker(
-          routeCoordinates[0].lat,
-          routeCoordinates[0].lng
-        ).addTo(this.map);
-      } else {
+      if (this.userMarker) {
         // If currentMarker already exists, just update its position to the start of the route
-        this.currentMarker.setLatLng(routeCoordinates[0]);
+        this.userMarker.setLatLng(routeCoordinates[0]);
       }
 
       // Observe user's position and update current marker's position along the route
@@ -122,7 +115,7 @@ export class MapWidget {
         );
 
         if (closestCoord) {
-          this.currentMarker?.setLatLng(closestCoord); // Update current marker's position
+          this.userMarker?.setLatLng(closestCoord); // Update current marker's position
 
           // Check if user has arrived at destination
           const destination = L.latLng(
@@ -163,9 +156,9 @@ export class MapWidget {
       this.map.removeControl(this.routingControl); // Remove route
       this.routingControl = null;
     }
-    if (this.currentMarker) {
-      this.map.removeLayer(this.currentMarker); // Remove current marker
-      this.currentMarker = null;
+    if (this.userMarker) {
+      this.map.removeLayer(this.userMarker); // Remove current marker
+      this.userMarker = null;
     }
     this.isMissionActive = false; // Mission is no longer active
   }
