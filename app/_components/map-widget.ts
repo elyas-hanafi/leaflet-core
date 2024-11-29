@@ -44,7 +44,7 @@ class MapElementFactory {
   static createRoutingControl(waypoints: L.LatLng[]): L.Routing.Control {
     return L.Routing.control({
       waypoints,
-      routeWhileDragging: true,
+      routeWhileDragging: false,
       show: false,
     });
   }
