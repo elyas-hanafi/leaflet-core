@@ -1,3 +1,4 @@
+/* eslint-disable prefer-const */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import "leaflet/dist/leaflet.css";
 import "leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.webpack.css";
@@ -43,7 +44,6 @@ export class MapWidget {
     });
 
     this.map.addLayer(this.clusterGroup);
-
     this.locationObserver.watchPosition(); // Start location tracking
   }
 
@@ -70,20 +70,32 @@ export class MapWidget {
     this.isMissionActive = true; // Mark mission as active
   }
 
-  // Follow the route and update the user's position on it
   private followRoute(routingControl: L.Routing.Control) {
     let routeCoordinates: any[] = [];
+    let traveledPath: L.Polyline | null = null; // Tracks the traveled path
+    let remainingPath: L.Polyline | null = null; // Tracks the remaining path
 
     routingControl.on("routesfound", (event) => {
       const routes = event.routes;
       routeCoordinates = routes[0].coordinates;
 
       if (!this.currentMarker) {
+        // Create the current marker only if it doesn't exist yet
         this.currentMarker = MapElementFactory.createMarker(
           routeCoordinates[0].lat,
           routeCoordinates[0].lng
         ).addTo(this.map);
+      } else {
+        // If currentMarker already exists, just update its position
+        this.currentMarker.setLatLng(routeCoordinates[0]);
       }
+
+      // Draw the entire route as blue (remaining path)
+      remainingPath = L.polyline(routeCoordinates, {
+        color: "blue", // Color for remaining path
+        weight: 5,
+        opacity: 0.7,
+      }).addTo(this.map);
 
       // Observe user's position and update current marker's position along the route
       this.locationObserver.addObserver((position) => {
@@ -95,7 +107,15 @@ export class MapWidget {
         );
 
         if (closestCoord) {
-          this.currentMarker?.setLatLng(closestCoord); // Update marker position
+          this.currentMarker?.setLatLng(closestCoord); // Update current marker's position
+
+          // Update the path: Change traveled path to gray and remaining path to blue
+          this.updateRoutePaths(
+            userPosition,
+            routeCoordinates,
+            traveledPath,
+            remainingPath
+          );
 
           // Check if user has arrived at destination
           const destination = L.latLng(
@@ -110,15 +130,69 @@ export class MapWidget {
     });
   }
 
-  // Callback to handle arrival at destination
+  // Method to update the route paths based on the user's progress
+  private updateRoutePaths(
+    userPosition: L.LatLng,
+    routeCoordinates: any[],
+    traveledPath: L.Polyline | null,
+    remainingPath: L.Polyline | null
+  ) {
+    // Find the user's position in the route
+    let traveledCoordinates: any[] = [];
+    let remainingCoordinates: any[] = [];
 
+    for (let i = 0; i < routeCoordinates.length; i++) {
+      const coord = routeCoordinates[i];
+      const distanceToUser = userPosition.distanceTo(
+        L.latLng(coord.lat, coord.lng)
+      );
+
+      if (distanceToUser <= 20) {
+        // User has passed this point, add to traveled coordinates
+        traveledCoordinates.push(coord);
+      } else {
+        // Remaining path, add to remaining coordinates
+        remainingCoordinates.push(coord);
+      }
+    }
+
+    // Update the traveled path (gray)
+    if (traveledCoordinates.length > 0) {
+      if (traveledPath) {
+        // Update the existing polyline (gray) to match traveled coordinates
+        traveledPath.setLatLngs(traveledCoordinates);
+      } else {
+        // Create new polyline for the traveled path
+        traveledPath = L.polyline(traveledCoordinates, {
+          color: "gray", // Color for traveled path
+          weight: 5,
+          opacity: 0.7,
+        }).addTo(this.map);
+      }
+    }
+
+    // Update the remaining path (blue)
+    if (remainingCoordinates.length > 0) {
+      if (remainingPath) {
+        // Update the existing polyline (blue) to match remaining coordinates
+        remainingPath.setLatLngs(remainingCoordinates);
+      } else {
+        // Create new polyline for the remaining path
+        remainingPath = L.polyline(remainingCoordinates, {
+          color: "blue", // Color for remaining path
+          weight: 5,
+          opacity: 0.7,
+        }).addTo(this.map);
+      }
+    }
+  }
+  // Callback to handle arrival at destination
   private onArrival(destination: L.LatLng) {
     alert(`You have arrived at your destination: ${destination}`);
     this.cancelMission(); // Optionally cancel the mission upon arrival
   }
 
   //Method to check if the user has arrived at the destination
-
   private hasArrivedAtDestination(
     userPosition: L.LatLng,
     destination: L.LatLng,
