@@ -129,10 +129,28 @@ export class MapWidget {
     this.followRoute(this.routingControl);
     this.isMissionActive = true; // Mark the mission as active
   }
+  /* 
+  Method to check if the user is off-course (based on threshold distance)
+  If the user is off the route by more than a certain threshold (e.g., 50 meters), 
+  we re-route them to the destination.
+*/
+  private isUserOffRoute(
+    userPosition: L.LatLng,
+    routeCoordinates: any[],
+    threshold: number = 50
+  ): boolean {
+    const closestCoord: L.LatLngExpression = this.getClosestRouteCoordinate(
+      userPosition,
+      routeCoordinates
+    );
+    const distanceToClosest = userPosition.distanceTo(closestCoord);
+
+    return distanceToClosest > threshold; // If the distance to the closest route coordinate is more than threshold, user is off-course
+  }
 
   /* 
   Follow route and update user marker's position along the route
-  Now includes arrival detection
+  Now includes off-course detection and re-routing
 */
   private followRoute(routingControl: L.Routing.Control) {
     let routeCoordinates: any[] = [];
@@ -166,6 +184,12 @@ export class MapWidget {
           );
           if (this.hasArrivedAtDestination(userPosition, destination)) {
             this.onArrival(destination); // Trigger arrival event or callback
+          }
+
+          // Check if the user is off course, and if so, re-route
+          if (this.isUserOffRoute(userPosition, routeCoordinates)) {
+            console.log("User is off-course. Re-calculating route...");
+            this.recalculateRoute(userPosition, destination);
           }
         }
       });
@@ -210,7 +234,7 @@ export class MapWidget {
   private getClosestRouteCoordinate(
     userPosition: L.LatLng,
     routeCoordinates: any[]
-  ) {
+  ): any {
     let closestCoord = null;
     let minDistance = Infinity;
 
@@ -264,5 +288,24 @@ export class MapWidget {
 
   public setMapViewToUserLocation(lat: number, lng: number) {
     this.map.setView([lat, lng], 2); // Adjust zoom level as necessary
+  }
+
+  /* 
+  Recalculate the route from the current location to the destination
+*/
+  private recalculateRoute(userPosition: L.LatLng, destination: L.LatLng) {
+    if (this.routingControl) {
+      // Remove the existing routing control
+      this.map.removeControl(this.routingControl);
+      this.routingControl = null;
+    }
+
+    // Create a new routing control with the current position and destination
+    this.routingControl = MapElementFactory.createRoutingControl([
+      userPosition,
+      destination,
+    ]);
+    this.routingControl.addTo(this.map);
+    this.followRoute(this.routingControl); // Start following the new route
   }
 }
