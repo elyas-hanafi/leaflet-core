@@ -19,7 +19,7 @@ const Map = dynamic(() => import("./_components/map"), {
 export default function Home() {
   const zoomLevel = 5;
   const { isInstalled, installPWA } = usePWADetection();
-
+  console.log(isInstalled);
   return (
     <>
       <Map zoomLevel={zoomLevel} />
@@ -29,7 +29,7 @@ export default function Home() {
             <DialogTitle>Install our app</DialogTitle>
             <DialogDescription>
               Would you like to install this app for a better experience? satus:
-              {isInstalled}
+              {`${isInstalled}`}
             </DialogDescription>
           </DialogHeader>
           <DialogFooter>
