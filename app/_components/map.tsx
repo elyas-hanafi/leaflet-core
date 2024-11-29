@@ -226,7 +226,7 @@ export default function Map({ zoomLevel }: { zoomLevel: number }) {
       {isMissionActive && (
         <div className="absolute bottom-28 w-[80%] mx-auto p-10 items-center justify-between bg-white left-1/2 -translate-x-1/2 rounded-xl flex flex-col gap-y-4 md:flex-row">
           <div className="bg-slate-200 p-5 rounded-xl">
-            <p>speed: {speed}</p>
+            <p>speed: {speed ? `${(speed * 3.6).toFixed(2)} km/h` : "N/A"}</p>
             <p>estimate to destination:</p>
           </div>
           <Button variant={`destructive`} onClick={handleCancelMission}>
