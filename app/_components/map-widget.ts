@@ -229,6 +229,6 @@ export class MapWidget {
   }
 
   public setMapViewToUserLocation(lat: number, lng: number) {
-    this.map.setView([lat, lng], 13); // Adjust zoom level as necessary
+    this.map.setView([lat, lng], 2); // Adjust zoom level as necessary
   }
 }
