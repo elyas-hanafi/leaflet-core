@@ -47,9 +47,8 @@ export const usePWADetection = () => {
 
 export const useGeolocationPrompt = () => {
   const [isLocationEnabled, setIsLocationEnabled] = useState<boolean>(true);
-  const [isPermissionGranted, setIsPermissionGranted] = useState<
-    boolean | null
-  >(null);
+  const [isPermissionGranted, setIsPermissionGranted] =
+    useState<boolean>(false);
 
   useEffect(() => {
     // Check if geolocation is supported by the browser
@@ -65,7 +64,7 @@ export const useGeolocationPrompt = () => {
       } else if (permission.state === "denied") {
         setIsPermissionGranted(false);
       } else {
-        setIsPermissionGranted(null); // 'prompt' state
+        setIsPermissionGranted(false); // 'prompt' state
       }
 
       // Check if location services are enabled
