@@ -21,7 +21,7 @@ const Map = dynamic(() => import("./_components/map"), {
 export default function Home() {
   const zoomLevel = 5;
   const { isInstalled } = usePWADetection();
-  const { isLocationEnabled, isPermissionGranted, promptUserToEnableLocation } =
+  const { isLocationEnabled, promptUserToEnableLocation } =
     useGeolocationPrompt();
   const [installModal, setInstallModal] = useState<any>(!isInstalled);
   function handelInstallModal() {
