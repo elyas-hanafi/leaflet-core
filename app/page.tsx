@@ -20,7 +20,7 @@ export default function Home() {
   const zoomLevel = 5;
   const { isInstalled } = usePWADetection();
   function handelInstallModal() {
-    pwaInstallHandler.install().catch(() => console.log("err"));
+    pwaInstallHandler.install().catch((err) => console.log(err));
   }
 
   return (
