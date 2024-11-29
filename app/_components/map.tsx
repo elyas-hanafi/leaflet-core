@@ -150,6 +150,7 @@ export default function Map({ zoomLevel }: { zoomLevel: number }) {
   const handleCancelMission = () => {
     mapRef.current?.cancelMission(); // Cancel mission
     setIsMissionActive(false); // Update state
+    setClusterModal(false);
   };
   const handleStartMission = () => {
     mapRef.current?.handleClusterClick(mapRef.current.clusterData.latlng);
