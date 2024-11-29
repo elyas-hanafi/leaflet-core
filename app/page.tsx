@@ -20,7 +20,7 @@ const Map = dynamic(() => import("./_components/map"), {
 
 export default function Home() {
   const zoomLevel = 5;
-  const { isLocationEnabled, promptUserToEnableLocation } =
+  const { isLocationEnabled, promptUserToEnableLocation, userLocation } =
     useGeolocationPrompt();
   const [installModal, setInstallModal] = useState<any>(true);
   function handelInstallModal() {
@@ -64,6 +64,9 @@ export default function Home() {
           </Dialog>
         </>
       )}
+      <div className="absolute bottom-28 w-[80%] mx-auto p-10 bg-white left-1/2 -translate-x-1/2 rounded-xl">
+        {`${userLocation}`}
+      </div>
     </>
   );
 }

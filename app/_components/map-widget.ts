@@ -95,7 +95,6 @@ export class MapWidget {
   // Initialize the map and add user location
   private init() {
     this.clusterGroup.on("click", (e: any) => {
-      console.log(e);
       this.handleClusterClick(e.latlng);
     });
     this.map.addLayer(this.clusterGroup);

@@ -49,6 +49,7 @@ export const useGeolocationPrompt = () => {
   const [isLocationEnabled, setIsLocationEnabled] = useState<boolean>(false);
   const [isPermissionGranted, setIsPermissionGranted] =
     useState<boolean>(false);
+  const [userLocation, setUserLocation] = useState<any[] | null>(null);
 
   useEffect(() => {
     // Check if geolocation is supported by the browser
@@ -69,7 +70,13 @@ export const useGeolocationPrompt = () => {
 
       // Check if location services are enabled
       navigator.geolocation.getCurrentPosition(
-        () => setIsLocationEnabled(true),
+        (position) => {
+          setIsLocationEnabled(true);
+          setUserLocation([
+            position.coords.latitude,
+            position.coords.longitude,
+          ]);
+        },
         () => setIsLocationEnabled(false)
       );
     });
@@ -78,10 +85,18 @@ export const useGeolocationPrompt = () => {
   const promptUserToEnableLocation = () => {
     // Try to get the user's position again (might prompt them if in 'prompt' state)
     navigator.geolocation.getCurrentPosition(
-      () => setIsLocationEnabled(true),
+      (position) => {
+        setIsLocationEnabled(true);
+        setUserLocation([position.coords.latitude, position.coords.longitude]);
+      },
       () => setIsLocationEnabled(false)
     );
   };
 
-  return { isLocationEnabled, isPermissionGranted, promptUserToEnableLocation };
+  return {
+    isLocationEnabled,
+    isPermissionGranted,
+    promptUserToEnableLocation,
+    userLocation,
+  };
 };
