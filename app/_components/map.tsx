@@ -2,6 +2,7 @@
 
 import { useRef, useEffect } from "react";
 import { MapWidget } from "./map-widget";
+
 // Example data
 const data = [
   {
@@ -416,7 +417,7 @@ export default function Map({ zoomLevel }: { zoomLevel: number }) {
   return (
     <>
       <div
-        className="w-full h-screen relative z-0" // Make the map container full screen
+        className="w-full h-screen absolute inset-0 z-0" // Make the map container full screen
         ref={containerRef}
       />
     </>
