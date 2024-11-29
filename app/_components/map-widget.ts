@@ -93,6 +93,7 @@ export class MapWidget {
   }
 
   // Follow the route and update the user's position on it
+
   private followRoute(routingControl: L.Routing.Control) {
     let routeCoordinates: any[] = [];
 
@@ -101,10 +102,14 @@ export class MapWidget {
       routeCoordinates = routes[0].coordinates;
 
       if (!this.currentMarker) {
+        // Create the current marker only if it doesn't exist yet
         this.currentMarker = MapElementFactory.createMarker(
           routeCoordinates[0].lat,
           routeCoordinates[0].lng
         ).addTo(this.map);
+      } else {
+        // If currentMarker already exists, just update its position to the start of the route
+        this.currentMarker.setLatLng(routeCoordinates[0]);
       }
 
       // Observe user's position and update current marker's position along the route
@@ -117,7 +122,7 @@ export class MapWidget {
         );
 
         if (closestCoord) {
-          this.currentMarker?.setLatLng(closestCoord); // Update marker position
+          this.currentMarker?.setLatLng(closestCoord); // Update current marker's position
 
           // Check if user has arrived at destination
           const destination = L.latLng(
