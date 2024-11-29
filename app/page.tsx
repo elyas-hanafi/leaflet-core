@@ -8,9 +8,9 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import usePWADetection from "@/lib/hooks";
+import { usePWADetection } from "@/lib/hooks";
 import dynamic from "next/dynamic";
-
+import { pwaInstallHandler } from "pwa-install-handler";
 const Map = dynamic(() => import("./_components/map"), {
   loading: () => <p>Loading...</p>,
   ssr: false,
@@ -18,8 +18,11 @@ const Map = dynamic(() => import("./_components/map"), {
 
 export default function Home() {
   const zoomLevel = 5;
-  const { isInstalled, installPWA } = usePWADetection();
-  console.log(isInstalled);
+  const { isInstalled } = usePWADetection();
+  function handelInstallModal() {
+    pwaInstallHandler.install().catch(() => console.log("err"));
+  }
+
   return (
     <>
       <Map zoomLevel={zoomLevel} />
@@ -33,7 +36,7 @@ export default function Home() {
             </DialogDescription>
           </DialogHeader>
           <DialogFooter>
-            <Button onClick={installPWA}>Install PWA</Button>
+            <Button onClick={handelInstallModal}>Install PWA</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
