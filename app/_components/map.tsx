@@ -463,7 +463,6 @@ export default function Map({ zoomLevel }: { zoomLevel: number }) {
                 <DialogTitle>Pleas Active Your GPS</DialogTitle>
                 <DialogDescription>
                   For Use this app you must active your GPS
-                  {`${installModal}`}
                 </DialogDescription>
               </DialogHeader>
               <DialogFooter>
