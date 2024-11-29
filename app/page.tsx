@@ -22,7 +22,7 @@ export default function Home() {
   const zoomLevel = 5;
   const { isLocationEnabled, promptUserToEnableLocation } =
     useGeolocationPrompt();
-  const [installModal, setInstallModal] = useState<any>(false);
+  const [installModal, setInstallModal] = useState<any>(true);
   function handelInstallModal() {
     pwaInstallHandler.install().catch((err) => console.log(err));
   }
