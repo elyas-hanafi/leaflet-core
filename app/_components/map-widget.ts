@@ -81,42 +81,53 @@ export class MapWidget {
   private currentMarker: L.Marker | null = null;
   private userMarker: L.Marker | null = null;
   private clusterGroup: L.MarkerClusterGroup;
+  public clusterData: any;
+  public clusterModal: boolean;
   private locationObserver: LocationObserver;
   public locationActive: boolean;
+  public isMissionActive: boolean; // Track if a mission is active
+  private routingControl: L.Routing.Control | null = null; // Store the routing control
 
-  constructor(domNode: string | HTMLElement) {
+  constructor(
+    domNode: string | HTMLElement,
+    { onClusterClick }: { onClusterClick: () => void }
+  ) {
     this.map = MapElementFactory.createMap(domNode);
     this.clusterGroup = MapElementFactory.createClusterGroup();
     this.locationObserver = new LocationObserver();
     this.locationActive = false;
-    this.init();
+    this.clusterModal = false;
+    this.isMissionActive = false; // Initially, no mission
+    this.init(onClusterClick);
   }
 
   // Initialize the map and add user location
-  private init() {
+  private init(onClusterClick: () => void) {
     this.clusterGroup.on("click", (e: any) => {
-      this.handleClusterClick(e.latlng);
+      if (this.isMissionActive) return; // Prevent click if mission is active
+      this.clusterData = e;
+      onClusterClick(); // Trigger callback when cluster is clicked
     });
+
     this.map.addLayer(this.clusterGroup);
   }
 
   // Handle cluster clicks and start routing
-  private handleClusterClick(latlng: L.LatLng) {
+  public handleClusterClick(latlng: L.LatLng) {
+    if (this.isMissionActive) return; // Don't allow clicks during an active mission
     if (!this.userMarker) {
-      // alert("User location not available.");
       this.locationActive = false;
       return;
     }
 
     const userLatLng = this.userMarker.getLatLng();
-    const routingControl = MapElementFactory.createRoutingControl([
+    this.routingControl = MapElementFactory.createRoutingControl([
       userLatLng,
       latlng,
     ]);
-
-    routingControl.addTo(this.map);
-    this.followRoute(routingControl);
-    this.locationActive = true;
+    this.routingControl.addTo(this.map);
+    this.followRoute(this.routingControl);
+    this.isMissionActive = true; // Mark the mission as active
   }
 
   // Follow route and update user marker's position along the route
@@ -137,7 +148,6 @@ export class MapWidget {
       this.locationObserver.addObserver((position) => {
         const { latitude, longitude } = position.coords;
         const userPosition = L.latLng(latitude, longitude);
-
         const closestCoord = this.getClosestRouteCoordinate(
           userPosition,
           routeCoordinates
@@ -147,6 +157,19 @@ export class MapWidget {
         }
       });
     });
+  }
+
+  // Cancel mission and remove routing
+  public cancelMission() {
+    if (this.routingControl) {
+      this.map.removeControl(this.routingControl); // Remove the route
+      this.routingControl = null;
+    }
+    if (this.currentMarker) {
+      this.map.removeLayer(this.currentMarker); // Remove the user marker
+      this.currentMarker = null;
+    }
+    this.isMissionActive = false; // Set mission to inactive
   }
 
   // Helper to find the closest coordinate in the route
@@ -180,24 +203,6 @@ export class MapWidget {
     };
 
     const lightData = L.geoJSON(data, {
-      onEachFeature: (feature, layer) => {
-        const popupContent = `
-          <h4 class="text-primary">Street Light</h4>
-          <div class="container">
-            <table class="table table-striped">
-              <thead><tr><th>Properties</th><th>Value</th></tr></thead>
-              <tbody>
-                <tr><td>Name</td><td>${feature.properties.Name}</td></tr>
-                <tr><td>Elevation</td><td>${feature.properties.ele}</td></tr>
-                <tr><td>Power (watt)</td><td>${feature.properties.Power_Watt}</td></tr>
-                <tr><td>Pole Height</td><td>${feature.properties.pole_hgt}</td></tr>
-                <tr><td>Time</td><td>${feature.properties.time}</td></tr>
-              </tbody>
-            </table>
-          </div>
-        `;
-        layer.bindPopup(popupContent);
-      },
       pointToLayer: (feature, latlng) => {
         return L.circleMarker(latlng, geojsonMarkerOptions);
       },

@@ -18,10 +18,11 @@ import {
 // Example data
 const data = [
   {
+    id: 1,
     type: "Feature",
     geometry: {
       type: "Point",
-      coordinates: [83.97833571758883, 28.252707666241346],
+      coordinates: [59.263044, 32.827136],
     },
     properties: {
       ele: 969.947449,
@@ -32,363 +33,14 @@ const data = [
     },
   },
   {
+    id: 2,
     type: "Feature",
     geometry: {
       type: "Point",
-      coordinates: [43.97833571758883, 28.252707666241346],
+      coordinates: [59.263044, 32.827136],
     },
     properties: {
       ele: 969.947449,
-      time: "2019-05-13T00:00:00.000Z",
-      Name: "SL1",
-      Power_Watt: 30,
-      pole_hgt: 8,
-    },
-  },
-  {
-    type: "Feature",
-    geometry: {
-      type: "Point",
-      coordinates: [43.97833571758883, 28.252707666241346],
-    },
-    properties: {
-      ele: 969.947449,
-      time: "2019-05-13T00:00:00.000Z",
-      Name: "SL1",
-      Power_Watt: 30,
-      pole_hgt: 8,
-    },
-  },
-  {
-    type: "Feature",
-    geometry: {
-      type: "Point",
-      coordinates: [33.97833571758883, 28.252707666241346],
-    },
-    properties: {
-      ele: 969.947449,
-      time: "2019-05-13T00:00:00.000Z",
-      Name: "SL1",
-      Power_Watt: 30,
-      pole_hgt: 8,
-    },
-  },
-  {
-    type: "Feature",
-    geometry: {
-      type: "Point",
-      coordinates: [33.97833571758883, 28.252707666241346],
-    },
-    properties: {
-      ele: 969.947449,
-      time: "2019-05-13T00:00:00.000Z",
-      Name: "SL1",
-      Power_Watt: 30,
-      pole_hgt: 8,
-    },
-  },
-  {
-    type: "Feature",
-    geometry: {
-      type: "Point",
-      coordinates: [53.97833571758883, 28.252707666241346],
-    },
-    properties: {
-      ele: 969.947449,
-      time: "2019-05-13T00:00:00.000Z",
-      Name: "SL1",
-      Power_Watt: 30,
-      pole_hgt: 8,
-    },
-  },
-  {
-    type: "Feature",
-    geometry: {
-      type: "Point",
-      coordinates: [53.97833571758883, 28.252707666241346],
-    },
-    properties: {
-      ele: 969.947449,
-      time: "2019-05-13T00:00:00.000Z",
-      Name: "SL1",
-      Power_Watt: 30,
-      pole_hgt: 8,
-    },
-  },
-  {
-    type: "Feature",
-    geometry: {
-      type: "Point",
-      coordinates: [50.97833571758883, 20.252707666241346],
-    },
-    properties: {
-      ele: 969.947449,
-      time: "2019-05-13T00:00:00.000Z",
-      Name: "SL1",
-      Power_Watt: 30,
-      pole_hgt: 8,
-    },
-  },
-  {
-    type: "Feature",
-    geometry: {
-      type: "Point",
-      coordinates: [50.97833571758883, 20.252707666241346],
-    },
-    properties: {
-      ele: 969.947449,
-      time: "2019-05-13T00:00:00.000Z",
-      Name: "SL1",
-      Power_Watt: 30,
-      pole_hgt: 8,
-    },
-  },
-  {
-    type: "Feature",
-    geometry: {
-      type: "Point",
-      coordinates: [50.97833571758883, 20.252707666241346],
-    },
-    properties: {
-      ele: 969.947449,
-      time: "2019-05-13T00:00:00.000Z",
-      Name: "SL1",
-      Power_Watt: 30,
-      pole_hgt: 8,
-    },
-  },
-  {
-    type: "Feature",
-    geometry: {
-      type: "Point",
-      coordinates: [55.97833571758883, 40.252707666241346],
-    },
-    properties: {
-      ele: 969.947449,
-      time: "2019-05-13T00:00:00.000Z",
-      Name: "SL1",
-      Power_Watt: 30,
-      pole_hgt: 8,
-    },
-  },
-  {
-    type: "Feature",
-    geometry: {
-      type: "Point",
-      coordinates: [55.97833571758883, 40.252707666241346],
-    },
-    properties: {
-      ele: 969.947449,
-      time: "2019-05-13T00:00:00.000Z",
-      Name: "SL1",
-      Power_Watt: 30,
-      pole_hgt: 8,
-    },
-  },
-  {
-    type: "Feature",
-    geometry: {
-      type: "Point",
-      coordinates: [55.97833571758883, 40.252707666241346],
-    },
-    properties: {
-      ele: 969.947449,
-      time: "2019-05-13T00:00:00.000Z",
-      Name: "SL1",
-      Power_Watt: 30,
-      pole_hgt: 8,
-    },
-  },
-  {
-    type: "Feature",
-    geometry: {
-      type: "Point",
-      coordinates: [55.97833571758883, 40.252707666241346],
-    },
-    properties: {
-      ele: 969.947449,
-      time: "2019-05-13T00:00:00.000Z",
-      Name: "SL1",
-      Power_Watt: 30,
-      pole_hgt: 8,
-    },
-  },
-  {
-    type: "Feature",
-    geometry: {
-      type: "Point",
-      coordinates: [55.97833571758883, 32.252707666241346],
-    },
-    properties: {
-      ele: 969.947449,
-      time: "2019-05-13T00:00:00.000Z",
-      Name: "SL1",
-      Power_Watt: 30,
-      pole_hgt: 8,
-    },
-  },
-  {
-    type: "Feature",
-    geometry: {
-      type: "Point",
-      coordinates: [55.97833571758883, 32.252707666241346],
-    },
-    properties: {
-      ele: 969.947449,
-      time: "2019-05-13T00:00:00.000Z",
-      Name: "SL1",
-      Power_Watt: 30,
-      pole_hgt: 8,
-    },
-  },
-  {
-    type: "Feature",
-    geometry: {
-      type: "Point",
-      coordinates: [55.97833571758883, 32.252707666241346],
-    },
-    properties: {
-      ele: 969.947449,
-      time: "2019-05-13T00:00:00.000Z",
-      Name: "SL1",
-      Power_Watt: 30,
-      pole_hgt: 8,
-    },
-  },
-  {
-    type: "Feature",
-    geometry: {
-      type: "Point",
-      coordinates: [55.97833571758883, 32.252707666241346],
-    },
-    properties: {
-      ele: 969.947449,
-      time: "2019-05-13T00:00:00.000Z",
-      Name: "SL1",
-      Power_Watt: 30,
-      pole_hgt: 8,
-    },
-  },
-  {
-    type: "Feature",
-    geometry: {
-      type: "Point",
-      coordinates: [55.97833571758883, 32.252707666241346],
-    },
-    properties: {
-      ele: 969.947449,
-      time: "2019-05-13T00:00:00.000Z",
-      Name: "SL1",
-      Power_Watt: 30,
-      pole_hgt: 8,
-    },
-  },
-  {
-    type: "Feature",
-    geometry: {
-      type: "Point",
-      coordinates: [55.97833571758883, 32.252707666241346],
-    },
-    properties: {
-      ele: 969.947449,
-      time: "2019-05-13T00:00:00.000Z",
-      Name: "SL1",
-      Power_Watt: 30,
-      pole_hgt: 8,
-    },
-  },
-  {
-    type: "Feature",
-    geometry: {
-      type: "Point",
-      coordinates: [83.97833571758883, 28.252707666241346],
-    },
-    properties: {
-      ele: 969.947449,
-      time: "2019-05-13T00:00:00.000Z",
-      Name: "SL1",
-      Power_Watt: 30,
-      pole_hgt: 8,
-    },
-  },
-  {
-    type: "Feature",
-    geometry: {
-      type: "Point",
-      coordinates: [83.97833571758883, 28.252707666241346],
-    },
-    properties: {
-      ele: 969.947449,
-      time: "2019-05-13T00:00:00.000Z",
-      Name: "SL1",
-      Power_Watt: 30,
-      pole_hgt: 8,
-    },
-  },
-  {
-    type: "Feature",
-    geometry: {
-      type: "Point",
-      coordinates: [83.97833571758883, 28.252707666241346],
-    },
-    properties: {
-      ele: 969.947449,
-      time: "2019-05-13T00:00:00.000Z",
-      Name: "SL1",
-      Power_Watt: 30,
-      pole_hgt: 8,
-    },
-  },
-  {
-    type: "Feature",
-    geometry: {
-      type: "Point",
-      coordinates: [81.97833571758883, 28.252707666241346],
-    },
-    properties: {
-      ele: 969.947449,
-      time: "2019-05-13T00:00:00.000Z",
-      Name: "SL1",
-      Power_Watt: 30,
-      pole_hgt: 8,
-    },
-  },
-  {
-    type: "Feature",
-    geometry: {
-      type: "Point",
-      coordinates: [80.97833571758883, 28.252707666241346],
-    },
-    properties: {
-      ele: 969.947449,
-      time: "2019-05-13T00:00:00.000Z",
-      Name: "SL1",
-      Power_Watt: 30,
-      pole_hgt: 8,
-    },
-  },
-  {
-    type: "Feature",
-    geometry: {
-      type: "Point",
-      coordinates: [83.97833571758883, 32.252707666241346],
-    },
-    properties: {
-      ele: 969.947449,
-      time: "2019-05-13T00:00:00.000Z",
-      Name: "SL1",
-      Power_Watt: 30,
-      pole_hgt: 8,
-    },
-  },
-  {
-    type: "Feature",
-    geometry: {
-      type: "Point",
-      coordinates: [25.97827769191508, 28.252452157174343],
-    },
-    properties: {
-      ele: 969.808594,
       time: "2019-05-13T00:00:00.000Z",
       Name: "SL2",
       Power_Watt: 30,
@@ -396,15 +48,46 @@ const data = [
     },
   },
   {
+    id: 3,
     type: "Feature",
     geometry: {
       type: "Point",
-      coordinates: [83.9781629749449, 28.252283018791324],
+      coordinates: [59.263044, 32.827136],
     },
     properties: {
-      ele: 968.762085,
+      ele: 969.947449,
       time: "2019-05-13T00:00:00.000Z",
       Name: "SL3",
+      Power_Watt: 30,
+      pole_hgt: 8,
+    },
+  },
+  {
+    id: 4,
+    type: "Feature",
+    geometry: {
+      type: "Point",
+      coordinates: [59.261316, 32.839234],
+    },
+    properties: {
+      ele: 969.947449,
+      time: "2019-05-13T00:00:00.000Z",
+      Name: "SL4",
+      Power_Watt: 30,
+      pole_hgt: 8,
+    },
+  },
+  {
+    id: 5,
+    type: "Feature",
+    geometry: {
+      type: "Point",
+      coordinates: [59.261316, 32.839234],
+    },
+    properties: {
+      ele: 969.947449,
+      time: "2019-05-13T00:00:00.000Z",
+      Name: "SL5",
       Power_Watt: 30,
       pole_hgt: 8,
     },
@@ -414,25 +97,35 @@ const data = [
 export default function Map({ zoomLevel }: { zoomLevel: number }) {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const mapRef = useRef<MapWidget | null>(null);
-
+  const [clusterModal, setClusterModal] = useState(false); // Track modal state
+  const [isMissionActive, setIsMissionActive] = useState(false); // Track mission state
   useEffect(() => {
     if (
       typeof window !== "undefined" &&
       containerRef.current &&
       !mapRef.current
     ) {
-      mapRef.current = new MapWidget(containerRef.current);
+      mapRef.current = new MapWidget(containerRef.current, {
+        onClusterClick: () => setClusterModal(true), // Pass callback to update state
+      });
       mapRef.current.addMarkersToCluster(data);
     }
   }, [zoomLevel]);
 
-  const { isLocationEnabled, promptUserToEnableLocation, userLocation } =
+  const { isLocationEnabled, promptUserToEnableLocation } =
     useGeolocationPrompt(mapRef.current!);
   const [installModal, setInstallModal] = useState<any>(true);
   function handelInstallModal() {
     pwaInstallHandler.install().catch((err) => console.log(err));
   }
-
+  const handleCancelMission = () => {
+    mapRef.current?.cancelMission(); // Cancel mission
+    setIsMissionActive(false); // Update state
+  };
+  const handleStartMission = () => {
+    mapRef.current?.handleClusterClick(mapRef.current.clusterData.latlng);
+    setIsMissionActive(true); // Update state
+  };
   return (
     <>
       <div
@@ -455,6 +148,35 @@ export default function Map({ zoomLevel }: { zoomLevel: number }) {
           </DialogFooter>
         </DialogContent>
       </Dialog>
+      <Dialog open={clusterModal}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Cluster node data</DialogTitle>
+
+            <div>
+              Name:{" "}
+              {
+                mapRef?.current?.clusterData?.propagatedFrom?.feature
+                  ?.properties.Name
+              }
+            </div>
+            <div>
+              Power:{" "}
+              {
+                mapRef?.current?.clusterData?.propagatedFrom?.feature
+                  ?.properties.Power_Watt
+              }
+            </div>
+          </DialogHeader>
+          <DialogFooter>
+            <Button onClick={() => setClusterModal(false)}>Close</Button>
+
+            <Button onClick={() => handleStartMission()} variant={`outline`}>
+              Start Mession
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
       {!installModal && (
         <>
           <Dialog open={!isLocationEnabled} onOpenChange={setInstallModal}>
@@ -472,9 +194,17 @@ export default function Map({ zoomLevel }: { zoomLevel: number }) {
           </Dialog>
         </>
       )}
-      <div className="absolute bottom-28 w-[80%] mx-auto p-10 bg-white left-1/2 -translate-x-1/2 rounded-xl">
-        {`${userLocation}`}
-      </div>
+      {isMissionActive && (
+        <div className="absolute bottom-28 w-[80%] mx-auto p-10 items-center justify-between bg-white left-1/2 -translate-x-1/2 rounded-xl flex">
+          <div className="bg-slate-200 p-5 rounded-xl">
+            <p>speed:</p>
+            <p>estimate to destination:</p>
+          </div>
+          <Button variant={`destructive`} onClick={handleCancelMission}>
+            Cancel Mission
+          </Button>
+        </div>
+      )}
     </>
   );
 }
