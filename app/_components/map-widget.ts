@@ -53,6 +53,7 @@ class MapElementFactory {
 // Observer for handling location updates
 class LocationObserver {
   private observers: Array<(position: GeolocationPosition) => void> = [];
+  private geoWatchId: number | null = null;
 
   addObserver(observer: (position: GeolocationPosition) => void) {
     this.observers.push(observer);
@@ -62,20 +63,31 @@ class LocationObserver {
     this.observers.forEach((observer) => observer(position));
   }
 
+  // Start watching position
   watchPosition() {
-    if (navigator.geolocation) {
-      navigator.geolocation.watchPosition(
-        (position) => this.notifyObservers(position),
-        (error) => console.error("Geolocation error:", error),
-        { enableHighAccuracy: true, maximumAge: 0, timeout: 15000 }
+    if (navigator.geolocation && !this.geoWatchId) {
+      this.geoWatchId = navigator.geolocation.watchPosition(
+        (position) => this.notifyObservers(position), // Callback on position change
+        (error) => console.error("Geolocation error:", error), // Handle error
+        {
+          enableHighAccuracy: true, // Get high accuracy location
+          timeout: 15000, // Timeout after 15 seconds
+          maximumAge: 0, // Always get fresh location
+        }
       );
     } else {
-      alert("Geolocation is not supported by this browser.");
+      console.error("Geolocation not supported or already watching position.");
+    }
+  }
+
+  // Stop watching position
+  stopWatching() {
+    if (this.geoWatchId !== null) {
+      navigator.geolocation.clearWatch(this.geoWatchId);
+      this.geoWatchId = null;
     }
   }
 }
-
-// Main MapWidget class
 export class MapWidget {
   protected map: L.Map;
   private currentMarker: L.Marker | null = null;
@@ -101,7 +113,6 @@ export class MapWidget {
     this.init(onClusterClick);
   }
 
-  // Initialize the map and add user location
   private init(onClusterClick: () => void) {
     this.clusterGroup.on("click", (e: any) => {
       if (this.isMissionActive) return; // Prevent click if mission is active
@@ -110,9 +121,39 @@ export class MapWidget {
     });
 
     this.map.addLayer(this.clusterGroup);
+
+    // Start observing user's location as soon as the map is ready
+    this.locationObserver.addObserver((position) => {
+      const { latitude, longitude } = position.coords;
+      this.updateUserMarker(latitude, longitude);
+    });
+
+    this.locationObserver.watchPosition(); // Start watching the user's position
   }
 
-  // Handle cluster clicks and start routing
+  // Update the user's marker position on the map
+  private updateUserMarker(lat: number, lng: number) {
+    if (!this.userMarker) {
+      this.userMarker = MapElementFactory.createMarker(
+        lat,
+        lng,
+        "You are here."
+      ).addTo(this.map);
+      this.map.setView([lat, lng], 15); // Zoom to the user's location
+    } else {
+      this.userMarker.setLatLng([lat, lng]);
+    }
+
+    // Optionally, add the updated user marker to the cluster
+    this.clusterGroup.addLayer(this.userMarker);
+  }
+
+  // Stop watching location when the widget is no longer needed
+  public stopLocationTracking() {
+    this.locationObserver.stopWatching();
+  }
+
+  // Handle the mission logic and route follow-up
   public handleClusterClick(latlng: L.LatLng) {
     if (this.isMissionActive) return; // Don't allow clicks during an active mission
     if (!this.userMarker) {
@@ -129,29 +170,8 @@ export class MapWidget {
     this.followRoute(this.routingControl);
     this.isMissionActive = true; // Mark the mission as active
   }
-  /* 
-  Method to check if the user is off-course (based on threshold distance)
-  If the user is off the route by more than a certain threshold (e.g., 50 meters), 
-  we re-route them to the destination.
-*/
-  private isUserOffRoute(
-    userPosition: L.LatLng,
-    routeCoordinates: any[],
-    threshold: number = 50
-  ): boolean {
-    const closestCoord: L.LatLngExpression = this.getClosestRouteCoordinate(
-      userPosition,
-      routeCoordinates
-    );
-    const distanceToClosest = userPosition.distanceTo(closestCoord);
 
-    return distanceToClosest > threshold; // If the distance to the closest route coordinate is more than threshold, user is off-course
-  }
-
-  /* 
-  Follow route and update user marker's position along the route
-  Now includes off-course detection and re-routing
-*/
+  // Follow route and update user marker’s position along the route
   private followRoute(routingControl: L.Routing.Control) {
     let routeCoordinates: any[] = [];
 
@@ -166,6 +186,7 @@ export class MapWidget {
         ).addTo(this.map);
       }
 
+      // Now observe the user's position and update accordingly
       this.locationObserver.addObserver((position) => {
         const { latitude, longitude } = position.coords;
         const userPosition = L.latLng(latitude, longitude);
@@ -177,19 +198,13 @@ export class MapWidget {
         if (closestCoord) {
           this.currentMarker?.setLatLng(closestCoord);
 
-          // Check if user has arrived at destination
+          // Check if the user has arrived at the destination
           const destination = L.latLng(
             routeCoordinates[routeCoordinates.length - 1].lat,
             routeCoordinates[routeCoordinates.length - 1].lng
           );
           if (this.hasArrivedAtDestination(userPosition, destination)) {
-            this.onArrival(destination); // Trigger arrival event or callback
-          }
-
-          // Check if the user is off course, and if so, re-route
-          if (this.isUserOffRoute(userPosition, routeCoordinates)) {
-            console.log("User is off-course. Re-calculating route...");
-            this.recalculateRoute(userPosition, destination);
+            this.onArrival(destination);
           }
         }
       });
