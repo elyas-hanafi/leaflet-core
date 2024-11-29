@@ -302,25 +302,6 @@ export class MapWidget {
   }
 
   public setMapViewToUserLocation(lat: number, lng: number) {
-    this.map.setView([lat, lng], 2); // Adjust zoom level as necessary
-  }
-
-  /* 
-  Recalculate the route from the current location to the destination
-*/
-  private recalculateRoute(userPosition: L.LatLng, destination: L.LatLng) {
-    if (this.routingControl) {
-      // Remove the existing routing control
-      this.map.removeControl(this.routingControl);
-      this.routingControl = null;
-    }
-
-    // Create a new routing control with the current position and destination
-    this.routingControl = MapElementFactory.createRoutingControl([
-      userPosition,
-      destination,
-    ]);
-    this.routingControl.addTo(this.map);
-    this.followRoute(this.routingControl); // Start following the new route
+    this.map.flyTo([lat, lng], 1); // Adjust zoom level as necessary
   }
 }
