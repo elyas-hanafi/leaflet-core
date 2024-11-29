@@ -28,7 +28,8 @@ export default function Home() {
           <DialogHeader>
             <DialogTitle>Install our app</DialogTitle>
             <DialogDescription>
-              Would you like to install this app for a better experience?
+              Would you like to install this app for a better experience? satus:
+              {isInstalled}
             </DialogDescription>
           </DialogHeader>
           <DialogFooter>
