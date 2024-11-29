@@ -179,6 +179,7 @@ export class MapWidget {
       const routes = event.routes;
       routeCoordinates = routes[0].coordinates;
 
+      // Use the user marker to follow the route
       if (!this.currentMarker) {
         this.currentMarker = MapElementFactory.createMarker(
           routeCoordinates[0].lat,
@@ -186,7 +187,7 @@ export class MapWidget {
         ).addTo(this.map);
       }
 
-      // Now observe the user's position and update accordingly
+      // Observe user's position and update accordingly
       this.locationObserver.addObserver((position) => {
         const { latitude, longitude } = position.coords;
         const userPosition = L.latLng(latitude, longitude);
@@ -196,6 +197,8 @@ export class MapWidget {
         );
 
         if (closestCoord) {
+          // Set the user marker position to the closest route coordinate
+          this.userMarker?.setLatLng(closestCoord);
           this.currentMarker?.setLatLng(closestCoord);
 
           // Check if the user has arrived at the destination
@@ -302,6 +305,6 @@ export class MapWidget {
   }
 
   public setMapViewToUserLocation(lat: number, lng: number) {
-    this.map.flyTo([lat, lng], 1); // Adjust zoom level as necessary
+    this.map.flyTo([lat, lng], 25); // Adjust zoom level as necessary
   }
 }
