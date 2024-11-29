@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/dialog";
 import usePWADetection from "@/lib/hooks";
 import dynamic from "next/dynamic";
-import { pwaInstallHandler } from "pwa-install-handler";
+
 const Map = dynamic(() => import("./_components/map"), {
   loading: () => <p>Loading...</p>,
   ssr: false,
@@ -18,24 +18,21 @@ const Map = dynamic(() => import("./_components/map"), {
 
 export default function Home() {
   const zoomLevel = 5;
-  const p = usePWADetection();
-  const handleInstall = () => {
-    pwaInstallHandler.install();
-  };
+  const { isInstalled, installPWA } = usePWADetection();
+
   return (
     <>
       <Map zoomLevel={zoomLevel} />
-      <Dialog open={!p.isInstalled}>
+      <Dialog open={!isInstalled}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Are you absolutely sure?</DialogTitle>
+            <DialogTitle>Install our app</DialogTitle>
             <DialogDescription>
-              This action cannot be undone. This will permanently delete your
-              account and remove your data from our servers.
+              Would you like to install this app for a better experience?
             </DialogDescription>
           </DialogHeader>
           <DialogFooter>
-            <Button onClick={handleInstall}>Button</Button>
+            <Button onClick={installPWA}>Install PWA</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>

@@ -1,31 +1,21 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useState } from "react";
 
 const usePWADetection = () => {
   const [isInstalled, setIsInstalled] = useState(false);
+  const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
 
   useEffect(() => {
-    // Check if the app is running in standalone mode (PWA installed)
+    // Check if app is running in standalone mode (PWA installed)
     const isStandalone = window.matchMedia(
       "(display-mode: standalone)"
     ).matches;
-    if (isStandalone) {
-      setIsInstalled(true);
-    }
+    setIsInstalled(isStandalone);
 
-    // Listen for changes in display mode (for install prompt or running as PWA)
-    window
-      .matchMedia("(display-mode: standalone)")
-      .addEventListener("change", (e) => {
-        setIsInstalled(e.matches);
-      });
-
-    // Optional: detect if the app is ready to be installed (install prompt fired)
-    let deferredPrompt: any;
-    const handleBeforeInstallPrompt = (e: Event) => {
+    // Listen for the beforeinstallprompt event
+    const handleBeforeInstallPrompt = (e: any) => {
       e.preventDefault();
-      deferredPrompt = e;
+      setDeferredPrompt(e); // Store the event
     };
 
     window.addEventListener("beforeinstallprompt", handleBeforeInstallPrompt);
@@ -38,7 +28,21 @@ const usePWADetection = () => {
     };
   }, []);
 
-  return { isInstalled };
+  const installPWA = () => {
+    if (deferredPrompt) {
+      deferredPrompt.prompt(); // Show the install prompt
+      deferredPrompt.userChoice.then((choiceResult: any) => {
+        if (choiceResult.outcome === "accepted") {
+          console.log("User accepted the PWA installation");
+        } else {
+          console.log("User dismissed the PWA installation");
+        }
+        setDeferredPrompt(null); // Clear the prompt
+      });
+    }
+  };
+
+  return { isInstalled, installPWA };
 };
 
 export default usePWADetection;
