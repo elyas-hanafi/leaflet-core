@@ -80,7 +80,7 @@ export const useGeolocationPrompt = (mapWidget: MapWidget) => {
           ]);
           // Pass the user's location to the MapWidget class
           if (mapWidget) {
-            mapWidget.setUserLocation(
+            mapWidget.setMapViewToUserLocation(
               position.coords.latitude,
               position.coords.longitude
             );

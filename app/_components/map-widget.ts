@@ -44,29 +44,7 @@ export class MapWidget {
 
     this.map.addLayer(this.clusterGroup);
 
-    // Start observing user's location once the map is ready
-    this.locationObserver.addObserver((position) => {
-      const { latitude, longitude } = position.coords;
-      this.updateUserMarker(latitude, longitude); // Update user's marker when position changes
-    });
-
     this.locationObserver.watchPosition(); // Start location tracking
-  }
-
-  // Update the user marker when location changes
-  private updateUserMarker(lat: number, lng: number) {
-    if (!this.userMarker) {
-      this.userMarker = MapElementFactory.createMarker(
-        lat,
-        lng,
-        "You are here."
-      ).addTo(this.map);
-      this.map.setView([lat, lng], 15); // Zoom in to user's location
-    } else {
-      this.userMarker.setLatLng([lat, lng]); // Update marker position
-    }
-
-    this.clusterGroup.addLayer(this.userMarker); // Add the user marker to the cluster group
   }
 
   // Stop watching user's location
@@ -132,17 +110,15 @@ export class MapWidget {
     });
   }
 
-  /* 
-  Callback to handle arrival at destination
-*/
+  // Callback to handle arrival at destination
+
   private onArrival(destination: L.LatLng) {
     alert(`You have arrived at your destination: ${destination}`);
     this.cancelMission(); // Optionally cancel the mission upon arrival
   }
 
-  /* 
-  Method to check if the user has arrived at the destination
-*/
+  //Method to check if the user has arrived at the destination
+
   private hasArrivedAtDestination(
     userPosition: L.LatLng,
     destination: L.LatLng,
@@ -204,25 +180,13 @@ export class MapWidget {
     this.clusterGroup.addLayer(lightData); // Add clustered markers to the map
   }
 
-  // Set user's location manually from external source
-  public setUserLocation(lat: number, lng: number) {
-    if (!this.userMarker) {
-      this.userMarker = MapElementFactory.createMarker(
-        lat,
-        lng,
-        "You are here."
-      ).addTo(this.map);
-      this.map.setView([lat, lng], 25); // Zoom to the user's location
-    } else {
-      this.userMarker.setLatLng([lat, lng]); // Update user marker position
-    }
-
-    // Optionally, add the user location to the cluster
-    this.clusterGroup.addLayer(this.userMarker);
-  }
-
   // Set map view to user's location with a specified zoom level
   public setMapViewToUserLocation(lat: number, lng: number) {
-    this.map.flyTo([lat, lng], 25); // Adjust zoom level as necessary
+    this.userMarker = MapElementFactory.createMarker(
+      lat,
+      lng,
+      "You are here."
+    ).addTo(this.map);
+    this.map.flyTo([lat, lng], 17); // Adjust zoom level as necessary
   }
 }
