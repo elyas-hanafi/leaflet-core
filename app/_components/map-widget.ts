@@ -67,7 +67,7 @@ class LocationObserver {
       navigator.geolocation.watchPosition(
         (position) => this.notifyObservers(position),
         (error) => console.error("Geolocation error:", error),
-        { enableHighAccuracy: true, maximumAge: 100, timeout: 200 }
+        { enableHighAccuracy: true, maximumAge: 0, timeout: 15000 }
       );
     } else {
       alert("Geolocation is not supported by this browser.");
@@ -219,7 +219,7 @@ export class MapWidget {
         lng,
         "You are here."
       ).addTo(this.map);
-      this.map.setView([lat, lng], 13); // Zoom to the user's location
+      this.map.setView([lat, lng], 25); // Zoom to the user's location
     } else {
       this.userMarker.setLatLng([lat, lng]);
     }
