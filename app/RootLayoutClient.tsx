@@ -18,43 +18,17 @@ function urlBase64ToUint8Array(base64String: string): Uint8Array {
 
 export default function RootLayoutClient({ children }: any) {
   useEffect(() => {
+    const testget = async () => {
+      const res = await fetch(
+        "https://express-dh0bnlyvl-elyashanafis-projects.vercel.app"
+      );
+      console.log(res);
+    };
+    estget();
     if ("serviceWorker" in navigator && "PushManager" in window) {
       const handleServiceWorker = async () => {
         // Register the service worker
-        const registration = await navigator.serviceWorker.register(
-          "/worker.js"
-        );
-        try {
-          // Convert the VAPID public key from URL base64 to Uint8Array
-          const vapidPublicKey = process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY!;
-          const applicationServerKey = urlBase64ToUint8Array(vapidPublicKey);
-
-          // Subscribe the user to push notifications
-          const subscription = await registration.pushManager.subscribe({
-            userVisibleOnly: true,
-            applicationServerKey,
-          });
-
-          // Send the subscription to the backend
-          const res = await fetch(
-            "https://express-9lhp9k4q3-elyashanafis-projects.vercel.app/subscribe",
-            {
-              method: "POST",
-              body: JSON.stringify(subscription),
-              headers: {
-                "content-type": "application/json",
-              },
-            }
-          );
-
-          const data = await res.json();
-          console.log("Subscription data:", data);
-        } catch (error) {
-          console.error(
-            "Error during service worker registration or push subscription",
-            error
-          );
-        }
+        await navigator.serviceWorker.register("/worker.js");
       };
 
       // Execute the function to subscribe
