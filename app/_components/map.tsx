@@ -101,6 +101,12 @@ export default function Map({ zoomLevel }: { zoomLevel: number }) {
   const [clusterModal, setClusterModal] = useState(false); // Track modal state
   const [isMissionActive, setIsMissionActive] = useState(false); // Track mission state
   const [speed, setSpeed] = useState<number | null>(null); // State to track speed
+  const [isStandalone, setIsStandalone] = useState(false);
+
+  useEffect(() => {
+    setIsStandalone(window.matchMedia("(display-mode: standalone)").matches);
+  }, []);
+
   useEffect(() => {
     if (
       typeof window !== "undefined" &&
@@ -186,7 +192,7 @@ export default function Map({ zoomLevel }: { zoomLevel: number }) {
         className="w-full h-screen absolute inset-0 z-0" // Make the map container full screen
         ref={containerRef}
       />
-      <Dialog open={installModal} onOpenChange={setInstallModal}>
+      <Dialog open={isStandalone} onOpenChange={setInstallModal}>
         <DialogContent>
           <DialogHeader>
             <DialogTitle>Install our app</DialogTitle>
