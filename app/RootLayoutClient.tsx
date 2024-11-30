@@ -18,11 +18,6 @@ import React, { useEffect } from "react";
 
 export default function RootLayoutClient({ children }: any) {
   useEffect(() => {
-    const testget = async () => {
-      const res = await fetch("https://express-rho-ten.vercel.app");
-      console.log(res);
-    };
-    testget();
     if ("serviceWorker" in navigator && "PushManager" in window) {
       const handleServiceWorker = async () => {
         // Register the service worker
