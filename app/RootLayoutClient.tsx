@@ -20,12 +20,11 @@ export default function RootLayoutClient({ children }: any) {
   useEffect(() => {
     if ("serviceWorker" in navigator && "PushManager" in window) {
       const handleServiceWorker = async () => {
+        // Register the service worker
+        const registration = await navigator.serviceWorker.register(
+          "/worker.js"
+        );
         try {
-          // Register the service worker
-          const registration = await navigator.serviceWorker.register(
-            "/worker.js"
-          );
-
           // Convert the VAPID public key from URL base64 to Uint8Array
           const vapidPublicKey = process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY!;
           const applicationServerKey = urlBase64ToUint8Array(vapidPublicKey);
