@@ -24,7 +24,7 @@ export default function RootLayoutClient({ children }: any) {
       );
       console.log(res);
     };
-    estget();
+    testget();
     if ("serviceWorker" in navigator && "PushManager" in window) {
       const handleServiceWorker = async () => {
         // Register the service worker
