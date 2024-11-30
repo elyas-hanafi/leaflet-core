@@ -19,9 +19,7 @@ import React, { useEffect } from "react";
 export default function RootLayoutClient({ children }: any) {
   useEffect(() => {
     const testget = async () => {
-      const res = await fetch(
-        "https://express-dh0bnlyvl-elyashanafis-projects.vercel.app"
-      );
+      const res = await fetch("https://express-rho-ten.vercel.app");
       console.log(res);
     };
     testget();
