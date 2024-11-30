@@ -38,7 +38,7 @@ export default function RootLayoutClient({ children }: any) {
 
           // Send the subscription to the backend
           const res = await fetch(
-            "https://express-9ljjh7cyt-elyashanafis-projects.vercel.app//subscribe",
+            "https://express-9ljjh7cyt-elyashanafis-projects.vercel.app/subscribe",
             {
               method: "POST",
               body: JSON.stringify(subscription),
