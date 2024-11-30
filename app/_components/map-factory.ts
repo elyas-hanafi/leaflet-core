@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import * as L from "leaflet";
 // Factory for creating map elements
 export class MapElementFactory {
@@ -27,22 +28,24 @@ export class MapElementFactory {
     lng: number,
     popupText: string = ""
   ): L.Marker {
-    const marker = L.marker([lat, lng]);
+    const marker = L.marker([lat, lng], {
+      draggable: false,
+    });
     if (popupText) marker.bindPopup(popupText); // If there's popup text, bind it to the marker
     return marker;
   }
-
-  // Creates a MarkerClusterGroup (for clustering markers together)
-  static createClusterGroup(): L.MarkerClusterGroup {
-    return L.markerClusterGroup();
-  }
-
   // Creates a routing control with the specified waypoints
   static createRoutingControl(waypoints: L.LatLng[]): L.Routing.Control {
     return L.Routing.control({
       waypoints,
       routeWhileDragging: false,
-      show: false, // Do not show route automatically
-    });
+      show: false, // Do not show the route automatically
+      createMarker: () => null, // Disable the marker creation at start and end
+    } as any); // Cast to any to bypass the TypeScript error
+  }
+
+  // Creates a MarkerClusterGroup (for clustering markers together)
+  static createClusterGroup(): L.MarkerClusterGroup {
+    return L.markerClusterGroup();
   }
 }

@@ -158,7 +158,9 @@ export default function Map({ zoomLevel }: { zoomLevel: number }) {
   };
 
   const handleStartMission = () => {
-    mapRef.current?.handleClusterClick(mapRef.current.clusterData.latlng);
+    mapRef.current?.handleClusterClick(
+      mapRef.current.clusterData.propagatedFrom.feature.geometry.coordinates.reverse()
+    );
     setIsMissionActive(true); // Update state
     setClusterModal(false);
   };
