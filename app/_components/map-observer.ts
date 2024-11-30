@@ -34,6 +34,7 @@ export class LocationObserver {
   stopWatching() {
     if (this.geoWatchId !== null) {
       navigator.geolocation.clearWatch(this.geoWatchId); // Stop watching location
+      this.observers = [];
       this.geoWatchId = null;
     }
   }
