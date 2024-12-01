@@ -185,6 +185,24 @@ export default function Map({ zoomLevel }: { zoomLevel: number }) {
     setClusterModal(false);
   };
 
+  const sendNotification = async () => {
+    try {
+      const response = await fetch(
+        "https://express-rho-ten.vercel.app/notify",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      const data = await response.json();
+      console.log(data);
+      alert("Notification sent!");
+    } catch (error) {
+      console.error("Error sending notification:", error);
+    }
+  };
   const handleSetMapViewToUserLocation = () => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
@@ -286,6 +304,13 @@ export default function Map({ zoomLevel }: { zoomLevel: number }) {
         onClick={handleSetMapViewToUserLocation}
       >
         <Icon icon="teenyicons:location-outline" />
+      </Button>
+      <Button
+        variant={"outline"}
+        className="absolute top-8 left-1/2 -translate-x-1/2 z-50"
+        onClick={sendNotification}
+      >
+        Notify Me
       </Button>
     </>
   );
