@@ -152,10 +152,13 @@ export default function Map({ zoomLevel }: { zoomLevel: number }) {
   const { isLocationEnabled, promptUserToEnableLocation } =
     useGeolocationPrompt(mapRef.current!);
 
-  const [installModal, setInstallModal] = useState<any>(true);
-
   function handelInstallModal() {
-    pwaInstallHandler.install().catch((err) => console.log(err));
+    pwaInstallHandler
+      .install()
+      .then(() => {
+        setIsStandalone(false);
+      })
+      .catch((err) => console.log(err));
   }
 
   const handleCancelMission = () => {
@@ -203,8 +206,8 @@ export default function Map({ zoomLevel }: { zoomLevel: number }) {
           </DialogHeader>
           <DialogFooter>
             <Button onClick={handelInstallModal}>Install PWA</Button>
-            <Button onClick={() => setInstallModal(false)} variant={`outline`}>
-              I am Already use App
+            <Button onClick={() => setIsStandalone(false)} variant={`outline`}>
+              Close
             </Button>
           </DialogFooter>
         </DialogContent>
@@ -238,9 +241,9 @@ export default function Map({ zoomLevel }: { zoomLevel: number }) {
           </DialogFooter>
         </DialogContent>
       </Dialog>
-      {!installModal && (
+      {!isStandalone && (
         <>
-          <Dialog open={!isLocationEnabled} onOpenChange={setInstallModal}>
+          <Dialog open={!isLocationEnabled}>
             <DialogContent>
               <DialogHeader>
                 <DialogTitle>Pleas Active Your GPS</DialogTitle>
