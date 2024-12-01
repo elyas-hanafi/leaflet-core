@@ -201,7 +201,6 @@ export default function Map({ zoomLevel }: { zoomLevel: number }) {
       );
       const data = await response.json();
       console.log(data);
-      alert("Notification sent!");
     } catch (error) {
       console.error("Error sending notification:", error);
     }
