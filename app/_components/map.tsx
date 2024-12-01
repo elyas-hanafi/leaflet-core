@@ -200,7 +200,8 @@ export default function Map({ zoomLevel }: { zoomLevel: number }) {
           <DialogHeader>
             <DialogTitle>Install our app</DialogTitle>
             <DialogDescription>
-              Would you like to install this app for a better experience?
+              Would you like to install this app for a better experience?{" "}
+              {`${isStandalone}`}
             </DialogDescription>
           </DialogHeader>
           <DialogFooter>
