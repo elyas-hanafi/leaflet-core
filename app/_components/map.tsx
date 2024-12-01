@@ -193,7 +193,7 @@ export default function Map({ zoomLevel }: { zoomLevel: number }) {
         className="w-full h-screen absolute inset-0 z-0" // Make the map container full screen
         ref={containerRef}
       />
-      <Dialog open={isStandalone} onOpenChange={setIsStandalone}>
+      <Dialog open={!isStandalone} onOpenChange={setIsStandalone}>
         <DialogContent>
           <DialogHeader>
             <DialogTitle>Install our app</DialogTitle>
