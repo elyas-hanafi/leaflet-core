@@ -105,7 +105,10 @@ export default function Map({ zoomLevel }: { zoomLevel: number }) {
   const [display, setMode] = useState<any>();
 
   useEffect(() => {
-    setIsStandalone(window.matchMedia("(display-mode: standalone)").matches);
+    setIsStandalone(
+      window.matchMedia("(display-mode: standalone)").matches ||
+        window.matchMedia("(display-mode: fullscreen)").matches
+    );
   }, []);
   useEffect(() => {
     const displayMode = window.matchMedia("(display-mode: standalone)").matches
