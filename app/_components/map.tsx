@@ -102,9 +102,20 @@ export default function Map({ zoomLevel }: { zoomLevel: number }) {
   const [isMissionActive, setIsMissionActive] = useState(false); // Track mission state
   const [speed, setSpeed] = useState<number | null>(null); // State to track speed
   const [isStandalone, setIsStandalone] = useState(false);
+  const [display, setMode] = useState<any>();
 
   useEffect(() => {
     setIsStandalone(window.matchMedia("(display-mode: standalone)").matches);
+  }, []);
+  useEffect(() => {
+    const displayMode = window.matchMedia("(display-mode: standalone)").matches
+      ? "standalone"
+      : window.matchMedia("(display-mode: fullscreen)").matches
+      ? "fullscreen"
+      : window.matchMedia("(display-mode: minimal-ui)").matches
+      ? "minimal-ui"
+      : "browser";
+    setMode(displayMode);
   }, []);
 
   useEffect(() => {
@@ -201,7 +212,7 @@ export default function Map({ zoomLevel }: { zoomLevel: number }) {
             <DialogTitle>Install our app</DialogTitle>
             <DialogDescription>
               Would you like to install this app for a better experience?{" "}
-              {`${isStandalone}`}
+              {`${display}`}
             </DialogDescription>
           </DialogHeader>
           <DialogFooter>
