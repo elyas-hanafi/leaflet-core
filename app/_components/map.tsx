@@ -156,7 +156,7 @@ export default function Map({ zoomLevel }: { zoomLevel: number }) {
     pwaInstallHandler
       .install()
       .then(() => {
-        setIsStandalone(false);
+        setIsStandalone(true);
       })
       .catch((err) => console.log(err));
   }
