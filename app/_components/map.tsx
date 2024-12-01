@@ -105,6 +105,7 @@ export default function Map({ zoomLevel }: { zoomLevel: number }) {
 
   useEffect(() => {
     setIsStandalone(window.matchMedia("(display-mode: standalone)").matches);
+    console.log(window.matchMedia("(display-mode: standalone)").matches);
   }, []);
 
   useEffect(() => {

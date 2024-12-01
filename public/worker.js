@@ -13,7 +13,7 @@ self.addEventListener("push", function (event) {
     console.log("sw notif", data);
     const options = {
       body: data.body,
-      icon: data.icon || "/icon.png",
+      icon: `/icon-192x192.png`,
       badge: "/badge.png",
       vibrate: [250, 300, 250],
       data: {
